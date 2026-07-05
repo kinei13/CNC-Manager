@@ -1,0 +1,267 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#161b22;
+    color:#ffffff;
+    font-family:"Segoe UI",sans-serif;
+    display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:260px;
+    min-height:100vh;
+    background:#0d1117;
+    border-right:1px solid #30363d;
+    padding:25px;
+    position:fixed;
+    left:0;
+    top:0;
+}
+
+.sidebar h2{
+    color:#58a6ff;
+    margin-bottom:35px;
+    font-size:26px;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar li{
+    margin-bottom:10px;
+}
+
+.sidebar a{
+    display:block;
+    text-decoration:none;
+    color:#c9d1d9;
+    padding:14px 18px;
+    border-radius:10px;
+    transition:.25s;
+    font-size:16px;
+}
+
+.sidebar a:hover{
+    background:#21262d;
+    color:#58a6ff;
+    transform:translateX(6px);
+}
+
+/* ANA ALAN */
+
+.main{
+    margin-left:260px;
+    width:100%;
+    padding:40px;
+}
+
+/* BAŞLIK */
+
+.page-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:35px;
+}
+
+.page-header h1{
+    font-size:34px;
+}
+
+/* BUTON */
+
+.add-button{
+    background:#238636;
+    color:white;
+    text-decoration:none;
+    border:none;
+    padding:14px 24px;
+    border-radius:12px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.add-button:hover{
+    background:#2ea043;
+    transform:scale(1.05);
+}
+
+/* DASHBOARD KARTLARI */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+    margin-top:35px;
+}
+
+.card{
+    background:#21262d;
+    border:1px solid #30363d;
+    border-radius:18px;
+    padding:30px;
+    transition:.25s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    border-color:#58a6ff;
+}
+
+.card h2{
+    font-size:42px;
+    color:#58a6ff;
+}
+
+.card p{
+    margin-top:12px;
+    color:#9ca3af;
+}
+
+/* MAKİNE KARTLARI */
+
+.machine-card{
+
+    background:#21262d;
+
+    border:1px solid #30363d;
+
+    border-radius:18px;
+
+    padding:28px;
+
+    margin-bottom:20px;
+
+    transition:.25s;
+
+}
+
+.machine-card:hover{
+
+    transform:translateY(-5px);
+
+    border-color:#58a6ff;
+
+}
+
+.machine-card h2{
+
+    margin-bottom:15px;
+
+}
+
+.machine-card a{
+
+    text-decoration:none;
+
+    color:#58a6ff;
+
+    font-size:26px;
+
+    font-weight:bold;
+
+}
+
+.machine-card p{
+
+    margin-top:8px;
+
+    color:#c9d1d9;
+
+}
+
+/* FORM */
+
+input,
+select{
+
+    width:100%;
+
+    background:#161b22;
+
+    border:1px solid #30363d;
+
+    color:white;
+
+    padding:14px;
+
+    border-radius:10px;
+
+    font-size:15px;
+
+}
+
+input:focus,
+select:focus{
+
+    outline:none;
+
+    border-color:#58a6ff;
+
+}
+
+/* TABLOLAR */
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:25px;
+
+}
+
+th{
+
+    background:#21262d;
+
+    padding:15px;
+
+    text-align:left;
+
+}
+
+td{
+
+    padding:15px;
+
+    border-bottom:1px solid #30363d;
+
+}
+
+tr:hover{
+
+    background:#21262d;
+
+}
+
+/* SCROLLBAR */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#30363d;
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#58a6ff;
+
+}

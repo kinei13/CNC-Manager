@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}Makineler{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>🏭 Makineler</h1>
+
+    <a href="/add-machine" class="add-button">
+        + Yeni Makine
+    </a>
+</div>
+
+{% if machines %}
+
+    {% for machine in machines %}
+
+    <div class="machine-card">
+
+        <h2>
+            <a href="/machine/{{ machine[0] }}">
+                {{ machine[1] }}
+            </a>
+        </h2>
+
+        <p>🏭 {{ machine[2] }}</p>
+
+        <p>🏷️ {{ machine[3] }}</p>
+
+        <p>⚙️ {{ machine[4] }}</p>
+
+        <p>💻 {{ machine[5] }}</p>
+
+    </div>
+
+    {% endfor %}
+
+{% else %}
+
+<div class="machine-card">
+
+    <h2>Henüz makine yok.</h2>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

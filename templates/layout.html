@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}CNC Manager{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <h2>⚙️ CNC Manager</h2>
+
+    <ul>
+
+        <li><a href="/">🏠 Dashboard</a></li>
+
+        <li><a href="/machines">🏭 Makineler</a></li>
+
+        <li><a href="#">📦 İşler</a></li>
+
+        <li><a href="#">👥 Müşteriler</a></li>
+
+        <li><a href="#">📄 Teknik Resimler</a></li>
+
+        <li><a href="#">💻 NC Programları</a></li>
+
+        <li><a href="#">📷 Fotoğraflar</a></li>
+
+        <li><a href="#">🧾 Faturalar</a></li>
+
+        <li><a href="#">📊 Raporlar</a></li>
+
+        <li><a href="#">⚙️ Ayarlar</a></li>
+
+    </ul>
+
+</div>
+
+<div class="main">
+
+{% block content %}
+
+{% endblock %}
+
+</div>
+
+</body>
+
+</html>

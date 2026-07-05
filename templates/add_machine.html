@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Yeni Makine</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="main">
+
+    <h1>🏭 Yeni Makine Ekle</h1>
+
+    <br>
+
+    <form method="POST">
+
+        <input type="text" name="name" placeholder="Makine Adı" required>
+
+        <br><br>
+
+        <select name="type" required>
+
+            <option value="">Makine Tipi Seç</option>
+
+            <option>CNC Torna</option>
+
+            <option>Dik İşleme Merkezi</option>
+
+            <option>Kayar Otomat</option>
+
+        </select>
+
+        <br><br>
+
+        <input type="text" name="brand" placeholder="Marka">
+
+        <br><br>
+
+        <input type="text" name="model" placeholder="Model">
+
+        <br><br>
+
+        <input type="text" name="control_unit" placeholder="Kontrol Ünitesi">
+
+        <br><br>
+
+        <button class="add-button">
+            💾 Kaydet
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ job["job_name"] }}{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>📦 {{ job["job_name"] }}</h1>
+
+        <p>Bu işe ait tüm bilgiler aşağıdadır.</p>
+
+    </div>
+
+    <a href="javascript:history.back()" class="add-button">
+        ← Geri
+    </a>
+
+</div>
+
+<div class="cards">
+
+    <div class="card">
+        <h2>{{ job["quantity"] }}</h2>
+        <p>Adet</p>
+    </div>
+
+    <div class="card">
+        <h2>{{ job["status"] }}</h2>
+        <p>Durum</p>
+    </div>
+
+</div>
+
+<br>
+
+<div class="machine-card">
+
+    <h2>📋 İş Bilgileri</h2>
+
+    <br>
+
+    <p><b>Malzeme :</b> {{ job["material"] }}</p>
+
+    <p><b>Üretim Tarihi :</b> {{ job["production_date"] }}</p>
+
+    <p><b>Teslim Tarihi :</b> {{ job["delivery_date"] }}</p>
+
+    <p><b>Not :</b></p>
+
+    <p>{{ job["notes"] }}</p>
+
+</div>
+
+<br>
+
+<div class="machine-card">
+
+    <h2>📄 Teknik Resimler</h2>
+
+    <br>
+
+    <button class="add-button">
+        + Teknik Resim Yükle
+    </button>
+
+</div>
+
+<br>
+
+<div class="machine-card">
+
+    <h2>💻 NC Programları</h2>
+
+    <br>
+
+    <button class="add-button">
+        + Program Yükle
+    </button>
+
+</div>
+
+<br>
+
+<div class="machine-card">
+
+    <h2>📷 Fotoğraflar</h2>
+
+    <br>
+
+    <button class="add-button">
+        + Fotoğraf Yükle
+    </button>
+
+</div>
+
+{% endblock %}

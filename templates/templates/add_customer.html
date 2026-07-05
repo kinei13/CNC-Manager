@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}Yeni Müşteri{% endblock %}
+
+{% block content %}
+
+<h1>👤 Yeni Müşteri</h1>
+
+<br>
+
+<form method="POST">
+
+    <input type="text" name="name" placeholder="Firma Adı" required>
+
+    <br><br>
+
+    <input type="text" name="phone" placeholder="Telefon">
+
+    <br><br>
+
+    <input type="email" name="email" placeholder="E-Posta">
+
+    <br><br>
+
+    <textarea
+        name="address"
+        placeholder="Adres"
+        rows="4"
+        style="width:100%;background:#161b22;color:white;border:1px solid #30363d;padding:15px;border-radius:10px;"
+    ></textarea>
+
+    <br><br>
+
+    <textarea
+        name="notes"
+        placeholder="Notlar"
+        rows="4"
+        style="width:100%;background:#161b22;color:white;border:1px solid #30363d;padding:15px;border-radius:10px;"
+    ></textarea>
+
+    <br><br>
+
+    <button class="add-button">
+        💾 Kaydet
+    </button>
+
+</form>
+
+{% endblock %}
