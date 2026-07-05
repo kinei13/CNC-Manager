@@ -7,15 +7,64 @@
 <div class="page-header">
 
     <div>
+
         <h1>📦 {{ job["job_name"] }}</h1>
-        <p>{{ job["machine_name"] }} | {{ job["customer_name"] }}</p>
+
+        <p>
+            {{ job["machine_name"] }}
+            |
+            {% if job["customer_name"] %}
+                {{ job["customer_name"] }}
+            {% else %}
+                Müşteri belirtilmemiş
+            {% endif %}
+        </p>
+
     </div>
 
-    <a href="javascript:history.back()" class="add-button">
+    <a
+        href="/machine/{{ job['machine_id'] }}"
+        class="add-button"
+    >
         ← Geri
     </a>
 
 </div>
+
+
+<div class="cards">
+
+    <div class="card">
+
+        <h2>{{ job["quantity"] }}</h2>
+
+        <p>Adet</p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>{{ job["status"] }}</h2>
+
+        <p>Durum</p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>{{ job["material"] }}</h2>
+
+        <p>Malzeme</p>
+
+    </div>
+
+</div>
+
+
+<br>
+
 
 <div class="machine-card">
 
@@ -23,22 +72,63 @@
 
     <br>
 
-    <p><b>🏭 Makine:</b> {{ job["machine_name"] }}</p>
-    <p><b>👤 Müşteri:</b> {{ job["customer_name"] }}</p>
-    <p><b>🧱 Malzeme:</b> {{ job["material"] }}</p>
-    <p><b>📦 Adet:</b> {{ job["quantity"] }}</p>
-    <p><b>📅 Üretim:</b> {{ job["production_date"] }}</p>
-    <p><b>🚚 Teslim:</b> {{ job["delivery_date"] }}</p>
-    <p><b>📌 Durum:</b> {{ job["status"] }}</p>
+    <p>
+        <b>🏭 Makine:</b>
+        {{ job["machine_name"] }}
+    </p>
+
+    <p>
+
+        <b>👤 Müşteri:</b>
+
+        {% if job["customer_name"] %}
+
+            {{ job["customer_name"] }}
+
+        {% else %}
+
+            Belirtilmemiş
+
+        {% endif %}
+
+    </p>
+
+    <p>
+        <b>🧱 Malzeme:</b>
+        {{ job["material"] }}
+    </p>
+
+    <p>
+        <b>📦 Adet:</b>
+        {{ job["quantity"] }}
+    </p>
+
+    <p>
+        <b>📅 Üretim:</b>
+        {{ job["production_date"] }}
+    </p>
+
+    <p>
+        <b>🚚 Teslim:</b>
+        {{ job["delivery_date"] }}
+    </p>
+
+    <p>
+        <b>📌 Durum:</b>
+        {{ job["status"] }}
+    </p>
 
     <br>
 
     <h3>📝 Notlar</h3>
+
     <p>{{ job["notes"] }}</p>
 
 </div>
 
+
 <br>
+
 
 <div class="machine-card">
 
@@ -46,13 +136,17 @@
 
         <h2>📄 Teknik Resimler</h2>
 
-        <a href="/job/{{ job['id'] }}/upload-drawing" class="add-button">
+        <a
+            href="/job/{{ job['id'] }}/upload-drawing"
+            class="add-button"
+        >
             + Teknik Resim Yükle
         </a>
 
     </div>
 
     <hr>
+
     <br>
 
     {% if drawings %}
@@ -60,23 +154,33 @@
         {% for drawing in drawings %}
 
             <p>
+
                 📄
-                <a href="/uploads/{{ drawing['file_path'] }}" target="_blank">
+
+                <a
+                    href="/uploads/{{ drawing['file_path'] }}"
+                    target="_blank"
+                >
                     {{ drawing["file_name"] }}
                 </a>
+
             </p>
 
         {% endfor %}
 
     {% else %}
 
-        <p>Henüz teknik resim yüklenmedi.</p>
+        <p>
+            Henüz teknik resim yüklenmedi.
+        </p>
 
     {% endif %}
 
 </div>
 
+
 <br>
+
 
 <div class="machine-card">
 
@@ -84,13 +188,17 @@
 
         <h2>💻 NC Programları</h2>
 
-        <a href="/job/{{ job['id'] }}/upload-program" class="add-button">
+        <a
+            href="/job/{{ job['id'] }}/upload-program"
+            class="add-button"
+        >
             + Program Yükle
         </a>
 
     </div>
 
     <hr>
+
     <br>
 
     {% if programs %}
@@ -98,28 +206,85 @@
         {% for program in programs %}
 
             <p>
+
                 💻
-                <a href="/uploads/{{ program['file_path'] }}" target="_blank">
+
+                <a
+                    href="/uploads/{{ program['file_path'] }}"
+                    target="_blank"
+                >
                     {{ program["file_name"] }}
                 </a>
+
             </p>
 
         {% endfor %}
 
     {% else %}
 
-        <p>Henüz NC programı yüklenmedi.</p>
+        <p>
+            Henüz NC programı yüklenmedi.
+        </p>
 
     {% endif %}
 
 </div>
 
+
 <br>
 
+
 <div class="machine-card">
-    <h2>📷 Fotoğraflar</h2>
+
+    <div class="page-header">
+
+        <h2>📷 Fotoğraflar</h2>
+
+        <a
+            href="/job/{{ job['id'] }}/upload-photo"
+            class="add-button"
+        >
+            + Fotoğraf Yükle
+        </a>
+
+    </div>
+
+    <hr>
+
     <br>
-    <p>Yakında eklenecek.</p>
+
+    {% if photos %}
+
+        <div class="photo-gallery">
+
+            {% for photo in photos %}
+
+                <a
+                    href="/uploads/{{ photo['file_path'] }}"
+                    target="_blank"
+                >
+
+                    <img
+                        src="/uploads/{{ photo['file_path'] }}"
+                        alt="{{ photo['file_name'] }}"
+                        class="job-photo"
+                    >
+
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <p>
+            Henüz fotoğraf yüklenmedi.
+        </p>
+
+    {% endif %}
+
 </div>
+
 
 {% endblock %}

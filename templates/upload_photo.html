@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block title %}Fotoğraf Yükle{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>📷 Fotoğraf Yükle</h1>
+
+    <a href="/job/{{ job_id }}" class="add-button">
+        ← Geri
+    </a>
+
+</div>
+
+<div class="machine-card">
+
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        <label>Fotoğrafları Seç</label>
+
+        <input
+            type="file"
+            name="photos"
+            accept=".jpg,.jpeg,.png,.webp"
+            multiple
+            required
+        >
+
+        <br><br>
+
+        <p>
+            Birden fazla fotoğrafı aynı anda seçebilirsin.
+        </p>
+
+        <br>
+
+        <button class="add-button">
+            📷 Fotoğrafları Yükle
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}
