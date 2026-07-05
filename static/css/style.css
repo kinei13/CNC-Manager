@@ -265,3 +265,23 @@ tr:hover{
     background:#58a6ff;
 
 }
+form input,
+form select,
+form textarea{
+
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    margin-top:8px;
+    background:#2d3442;
+    color:white;
+    font-size:15px;
+
+}
+
+form label{
+
+    font-weight:bold;
+
+}

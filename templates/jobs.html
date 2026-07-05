@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block title %}İşler{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>📦 Tüm İşler</h1>
+
+</div>
+
+{% if jobs %}
+
+    {% for job in jobs %}
+
+    <a href="/job/{{ job['id'] }}" style="text-decoration:none; color:white;">
+
+        <div class="machine-card">
+
+            <h2>{{ job["job_name"] }}</h2>
+
+            <br>
+
+            <p><b>🏭 Makine:</b> {{ job["machine_name"] }}</p>
+
+            <p><b>👤 Müşteri:</b>
+                {% if job["customer_name"] %}
+                    {{ job["customer_name"] }}
+                {% else %}
+                    Belirtilmemiş
+                {% endif %}
+            </p>
+
+            <p><b>🧱 Malzeme:</b> {{ job["material"] }}</p>
+
+            <p><b>📦 Adet:</b> {{ job["quantity"] }}</p>
+
+            <p><b>📅 Üretim:</b> {{ job["production_date"] }}</p>
+
+            <p><b>🚚 Teslim:</b> {{ job["delivery_date"] }}</p>
+
+            <p><b>📌 Durum:</b> {{ job["status"] }}</p>
+
+        </div>
+
+    </a>
+
+    <br>
+
+    {% endfor %}
+
+{% else %}
+
+<div class="machine-card">
+
+    <h2>Henüz kayıtlı iş bulunmuyor.</h2>
+
+    <p>Bir makineye girip <b>+ Yeni İş</b> butonundan ilk işi oluşturabilirsin.</p>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

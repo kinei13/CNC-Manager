@@ -4,45 +4,97 @@
 
 {% block content %}
 
-<h1>📦 Yeni İş Ekle</h1>
+<div class="page-header">
 
-<br>
+    <h1>📦 Yeni İş Ekle</h1>
+
+</div>
 
 <form method="POST">
 
-    <input type="text" name="job_name" placeholder="İş Adı" required>
+    <label>İş Adı</label>
+
+    <input
+        type="text"
+        name="job_name"
+        placeholder="Örneğin: Flanş Ø80"
+        required
+    >
 
     <br><br>
 
-    <input type="text" name="material" placeholder="Malzeme">
+    <label>Müşteri</label>
+
+    <select name="customer_id">
+
+        <option value="">Müşteri Seçiniz</option>
+
+        {% for customer in customers %}
+
+        <option value="{{ customer['id'] }}">
+
+            {{ customer["name"] }}
+
+        </option>
+
+        {% endfor %}
+
+    </select>
 
     <br><br>
 
-    <input type="number" name="quantity" placeholder="Adet">
+    <label>Malzeme</label>
+
+    <input
+        type="text"
+        name="material"
+        placeholder="C45 / Alüminyum / Paslanmaz"
+    >
+
+    <br><br>
+
+    <label>Adet</label>
+
+    <input
+        type="number"
+        name="quantity"
+        placeholder="500"
+    >
 
     <br><br>
 
     <label>Üretim Tarihi</label>
-    <input type="date" name="production_date">
+
+    <input
+        type="date"
+        name="production_date"
+    >
 
     <br><br>
 
     <label>Teslim Tarihi</label>
-    <input type="date" name="delivery_date">
+
+    <input
+        type="date"
+        name="delivery_date"
+    >
 
     <br><br>
 
+    <label>Notlar</label>
+
     <textarea
         name="notes"
-        placeholder="Notlar"
         rows="5"
-        style="width:100%;background:#161b22;color:white;border:1px solid #30363d;padding:15px;border-radius:10px;"
+        placeholder="İş ile ilgili notlar..."
     ></textarea>
 
     <br><br>
 
     <button class="add-button">
-        💾 Kaydet
+
+        💾 İşi Kaydet
+
     </button>
 
 </form>
