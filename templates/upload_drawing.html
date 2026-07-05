@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}Teknik Resim Yükle{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>📄 Teknik Resim Yükle</h1>
+
+    <a href="/job/{{ job_id }}" class="add-button">
+        ← Geri
+    </a>
+</div>
+
+<form method="POST" enctype="multipart/form-data">
+
+    <label>Teknik Resim Dosyası</label>
+
+    <input type="file" name="drawing" required>
+
+    <br><br>
+
+    <button class="add-button">
+        💾 Yükle
+    </button>
+
+</form>
+
+{% endblock %}
