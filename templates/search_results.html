@@ -1,26 +1,40 @@
 {% extends "layout.html" %}
 
-{% block title %}İşler{% endblock %}
+{% block title %}Arama Sonuçları{% endblock %}
 
 {% block content %}
 
 <div class="page-header">
 
-    <h1>📦 Tüm İşler</h1>
+    <div>
 
-    <a
-        href="/add-job"
-        class="add-button"
-    >
-        + Yeni İş
-    </a>
+        <h1>🔎 Arama Sonuçları</h1>
+
+        {% if query %}
+
+            <p>
+                "<b>{{ query }}</b>" için bulunan sonuçlar
+            </p>
+
+        {% endif %}
+
+    </div>
 
 </div>
 
 
-{% if jobs %}
+{% if results %}
 
-    {% for job in jobs %}
+    <div class="machine-card">
+
+        <h2>
+            {{ results|length }} iş bulundu
+        </h2>
+
+    </div>
+
+
+    {% for job in results %}
 
         <a
             href="/job/{{ job['id'] }}"
@@ -33,7 +47,7 @@
             <div class="machine-card">
 
                 <h2>
-                    {{ job["job_name"] }}
+                    📦 {{ job["job_name"] }}
                 </h2>
 
                 <p>
@@ -41,35 +55,50 @@
                     {{ job["machine_name"] }}
                 </p>
 
-                <p>
-                    <b>👤 Müşteri:</b>
-                    {{ job["customer_name"] or "Belirtilmemiş" }}
-                </p>
 
                 <p>
-                    <b>📁 Klasör:</b>
-                    {{ job["folder_name"] or "Genel İşler" }}
+
+                    <b>👤 Müşteri:</b>
+
+                    {% if job["customer_name"] %}
+
+                        {{ job["customer_name"] }}
+
+                    {% else %}
+
+                        Belirtilmemiş
+
+                    {% endif %}
+
                 </p>
+
 
                 <p>
                     <b>🧱 Malzeme:</b>
                     {{ job["material"] }}
                 </p>
 
+
                 <p>
                     <b>📦 Adet:</b>
                     {{ job["quantity"] }}
                 </p>
 
-                <p>
-                    <b>🚚 Teslim:</b>
-                    {{ job["delivery_date"] or "Belirtilmemiş" }}
-                </p>
 
                 <p>
                     <b>📌 Durum:</b>
                     {{ job["status"] }}
                 </p>
+
+
+                {% if job["notes"] %}
+
+                    <p>
+                        <b>📝 Not:</b>
+                        {{ job["notes"] }}
+                    </p>
+
+                {% endif %}
 
             </div>
 
@@ -77,13 +106,18 @@
 
     {% endfor %}
 
+
 {% else %}
 
     <div class="machine-card">
 
-        <h2>
-            Henüz kayıtlı iş bulunmuyor.
-        </h2>
+        <h2>Sonuç bulunamadı.</h2>
+
+        <br>
+
+        <p>
+            "{{ query }}" ile eşleşen bir iş veya dosya bulunamadı.
+        </p>
 
     </div>
 

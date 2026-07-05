@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{ folder["name"] }} - {{ year }}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>
+            📁 {{ customer["name"] }}
+            / {{ folder["name"] }}
+            / {{ year }}
+        </h1>
+
+        <p>
+            Teslim ayları
+        </p>
+
+    </div>
+
+    <a
+        href="/customer/{{ customer['id'] }}/folder/{{ folder['id'] }}"
+        class="add-button"
+    >
+        ← Geri
+    </a>
+
+</div>
+
+
+{% if months %}
+
+    <div class="folder-grid">
+
+        {% for month in months %}
+
+            <a
+                href="/customer/{{ customer['id'] }}/folder/{{ folder['id'] }}/year/{{ year }}/month/{{ month['month'] }}"
+                class="folder-card"
+            >
+
+                <div class="folder-icon">
+                    📁
+                </div>
+
+                <div>
+
+                    <h2>
+                        {{ month["month_name"] }}
+                    </h2>
+
+                    <p>
+                        {{ month["job_count"] }} iş
+                    </p>
+
+                </div>
+
+            </a>
+
+        {% endfor %}
+
+    </div>
+
+{% else %}
+
+    <div class="machine-card">
+
+        <p>
+            Bu yıla ait iş bulunmuyor.
+        </p>
+
+    </div>
+
+{% endif %}
+
+{% endblock %}

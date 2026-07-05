@@ -1,18 +1,33 @@
 {% extends "layout.html" %}
 
-{% block title %}İşler{% endblock %}
+{% block title %}
+{{ folder["name"] }} - {{ month_name }} {{ year }}
+{% endblock %}
 
 {% block content %}
 
 <div class="page-header">
 
-    <h1>📦 Tüm İşler</h1>
+    <div>
+
+        <h1>
+            📁 {{ customer["name"] }}
+            / {{ folder["name"] }}
+            / {{ year }}
+            / {{ month_name }}
+        </h1>
+
+        <p>
+            Teslim edilen işler
+        </p>
+
+    </div>
 
     <a
-        href="/add-job"
+        href="/customer/{{ customer['id'] }}/folder/{{ folder['id'] }}/year/{{ year }}"
         class="add-button"
     >
-        + Yeni İş
+        ← Geri
     </a>
 
 </div>
@@ -33,22 +48,12 @@
             <div class="machine-card">
 
                 <h2>
-                    {{ job["job_name"] }}
+                    📦 {{ job["job_name"] }}
                 </h2>
 
                 <p>
                     <b>🏭 Makine:</b>
                     {{ job["machine_name"] }}
-                </p>
-
-                <p>
-                    <b>👤 Müşteri:</b>
-                    {{ job["customer_name"] or "Belirtilmemiş" }}
-                </p>
-
-                <p>
-                    <b>📁 Klasör:</b>
-                    {{ job["folder_name"] or "Genel İşler" }}
                 </p>
 
                 <p>
@@ -62,8 +67,18 @@
                 </p>
 
                 <p>
+                    <b>▶️ Başlama:</b>
+                    {{ job["start_date"] or "Belirtilmemiş" }}
+                </p>
+
+                <p>
+                    <b>✅ Bitiş:</b>
+                    {{ job["end_date"] or "Belirtilmemiş" }}
+                </p>
+
+                <p>
                     <b>🚚 Teslim:</b>
-                    {{ job["delivery_date"] or "Belirtilmemiş" }}
+                    {{ job["delivery_date"] }}
                 </p>
 
                 <p>
@@ -81,9 +96,9 @@
 
     <div class="machine-card">
 
-        <h2>
-            Henüz kayıtlı iş bulunmuyor.
-        </h2>
+        <p>
+            Bu aya ait iş bulunmuyor.
+        </p>
 
     </div>
 

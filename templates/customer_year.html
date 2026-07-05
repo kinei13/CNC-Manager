@@ -1,31 +1,42 @@
 {% extends "layout.html" %}
 
-{% block title %}Müşteriler{% endblock %}
+{% block title %}{{ customer["name"] }} - {{ year }}{% endblock %}
 
 {% block content %}
 
 <div class="page-header">
 
-    <h1>👥 Müşteriler</h1>
+    <div>
+
+        <h1>
+            📁 {{ customer["name"] }} / {{ year }}
+        </h1>
+
+        <p>
+            Teslim ayları
+        </p>
+
+    </div>
+
 
     <a
-        href="/add-customer"
+        href="/customer/{{ customer['id'] }}"
         class="add-button"
     >
-        + Yeni Müşteri
+        ← Geri
     </a>
 
 </div>
 
 
-{% if customers %}
+{% if months %}
 
     <div class="folder-grid">
 
-        {% for customer in customers %}
+        {% for month in months %}
 
             <a
-                href="/customer/{{ customer['id'] }}"
+                href="/customer/{{ customer['id'] }}/year/{{ year }}/month/{{ month['month'] }}"
                 class="folder-card"
             >
 
@@ -36,11 +47,11 @@
                 <div>
 
                     <h2>
-                        {{ customer["name"] }}
+                        {{ month["month_name"] }}
                     </h2>
 
                     <p>
-                        {{ customer["job_count"] }} iş
+                        {{ month["job_count"] }} iş
                     </p>
 
                 </div>
@@ -56,9 +67,9 @@
 
     <div class="machine-card">
 
-        <h2>
-            Henüz müşteri bulunmuyor.
-        </h2>
+        <p>
+            Bu yıla ait iş bulunmuyor.
+        </p>
 
     </div>
 

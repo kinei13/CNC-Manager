@@ -8,95 +8,633 @@
 
     <h1>📦 Yeni İş Ekle</h1>
 
+    <a
+        href="/jobs"
+        class="add-button"
+    >
+        ← Geri
+    </a>
+
 </div>
 
-<form method="POST">
 
-    <label>İş Adı</label>
+<div class="machine-card">
 
-    <input
-        type="text"
-        name="job_name"
-        placeholder="Örneğin: Flanş Ø80"
-        required
-    >
+    <form method="POST">
 
-    <br><br>
+        <label>İş Adı</label>
 
-    <label>Müşteri</label>
+        <input
+            type="text"
+            name="job_name"
+            placeholder="Örneğin: Flanş Ø80"
+            required
+        >
 
-    <select name="customer_id">
 
-        <option value="">Müşteri Seçiniz</option>
+        <br><br>
 
-        {% for customer in customers %}
 
-        <option value="{{ customer['id'] }}">
+        <label>🏭 Makine</label>
 
-            {{ customer["name"] }}
+        <select
+            name="machine_id"
+            required
+        >
 
-        </option>
+            <option value="">
+                Makine Seçiniz
+            </option>
 
-        {% endfor %}
+            {% for machine in machines %}
 
-    </select>
+                <option
+                    value="{{ machine['id'] }}"
 
-    <br><br>
+                    {% if selected_machine_id == machine["id"] %}
+                        selected
+                    {% endif %}
+                >
+                    {{ machine["name"] }}
+                </option>
 
-    <label>Malzeme</label>
+            {% endfor %}
 
-    <input
-        type="text"
-        name="material"
-        placeholder="C45 / Alüminyum / Paslanmaz"
-    >
+        </select>
 
-    <br><br>
 
-    <label>Adet</label>
+        <br><br>
 
-    <input
-        type="number"
-        name="quantity"
-        placeholder="500"
-    >
 
-    <br><br>
+        <div class="field-title-row">
 
-    <label>Üretim Tarihi</label>
+            <label>👤 Müşteri</label>
 
-    <input
-        type="date"
-        name="production_date"
-    >
+            <button
+                type="button"
+                class="small-action-button"
+                id="show-customer-create"
+            >
+                + Yeni Müşteri
+            </button>
 
-    <br><br>
+        </div>
 
-    <label>Teslim Tarihi</label>
 
-    <input
-        type="date"
-        name="delivery_date"
-    >
+        <select
+            name="customer_id"
+            id="customer-select"
+        >
 
-    <br><br>
+            <option value="">
+                Müşteri Seçiniz
+            </option>
 
-    <label>Notlar</label>
+            {% for customer in customers %}
 
-    <textarea
-        name="notes"
-        rows="5"
-        placeholder="İş ile ilgili notlar..."
-    ></textarea>
+                <option value="{{ customer['id'] }}">
+                    {{ customer["name"] }}
+                </option>
 
-    <br><br>
+            {% endfor %}
 
-    <button class="add-button">
+        </select>
 
-        💾 İşi Kaydet
 
-    </button>
+        <div
+            id="quick-customer-box"
+            class="quick-create-box"
+            style="display: none;"
+        >
 
-</form>
+            <label>Yeni Müşteri Adı</label>
+
+            <div class="quick-create-row">
+
+                <input
+                    type="text"
+                    id="new-customer-name"
+                    placeholder="Örneğin: ABC Makine"
+                >
+
+                <button
+                    type="button"
+                    class="add-button"
+                    id="create-customer-button"
+                >
+                    Oluştur
+                </button>
+
+            </div>
+
+            <p
+                id="customer-create-message"
+                class="form-message"
+            ></p>
+
+        </div>
+
+
+        <br><br>
+
+
+        <label>📁 Müşteri Klasörü / Proje</label>
+
+        <select
+            name="folder_id"
+            id="folder-select"
+            disabled
+        >
+
+            <option value="">
+                Önce müşteri seçiniz
+            </option>
+
+        </select>
+
+
+        <br><br>
+
+
+        <label>Malzeme</label>
+
+        <input
+            type="text"
+            name="material"
+            placeholder="304 / 1040 / Alüminyum"
+        >
+
+
+        <br><br>
+
+
+        <label>Adet</label>
+
+        <input
+            type="number"
+            name="quantity"
+            placeholder="500"
+            min="0"
+        >
+
+
+        <br><br>
+
+
+        <label>▶️ İşe Başlama Tarihi</label>
+
+        <div class="date-select-row">
+
+            <select name="start_day">
+
+                <option value="">Gün</option>
+
+                {% for day in range(1, 32) %}
+
+                    <option value="{{ day }}">
+                        {{ day }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <select name="start_month">
+
+                <option value="">Ay</option>
+
+                {% for month_number, month_name in months.items() %}
+
+                    <option value="{{ month_number }}">
+                        {{ month_name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <select name="start_year">
+
+                <option value="">Yıl</option>
+
+                {% for year in years|reverse %}
+
+                    <option value="{{ year }}">
+                        {{ year }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <br><br>
+
+
+        <label>✅ İşi Bitirme Tarihi</label>
+
+        <div class="date-select-row">
+
+            <select name="end_day">
+
+                <option value="">Gün</option>
+
+                {% for day in range(1, 32) %}
+
+                    <option value="{{ day }}">
+                        {{ day }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <select name="end_month">
+
+                <option value="">Ay</option>
+
+                {% for month_number, month_name in months.items() %}
+
+                    <option value="{{ month_number }}">
+                        {{ month_name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <select name="end_year">
+
+                <option value="">Yıl</option>
+
+                {% for year in years|reverse %}
+
+                    <option value="{{ year }}">
+                        {{ year }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <br><br>
+
+
+        <label>🚚 Teslim Tarihi</label>
+
+        <div class="date-select-row">
+
+            <select name="delivery_day">
+
+                <option value="">Gün</option>
+
+                {% for day in range(1, 32) %}
+
+                    <option value="{{ day }}">
+                        {{ day }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <select name="delivery_month">
+
+                <option value="">Ay</option>
+
+                {% for month_number, month_name in months.items() %}
+
+                    <option value="{{ month_number }}">
+                        {{ month_name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <select name="delivery_year">
+
+                <option value="">Yıl</option>
+
+                {% for year in years|reverse %}
+
+                    <option value="{{ year }}">
+                        {{ year }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <br><br>
+
+
+        <label>Notlar</label>
+
+        <textarea
+            name="notes"
+            rows="6"
+            placeholder="İş ile ilgili notlar..."
+        ></textarea>
+
+
+        <br><br>
+
+
+        <button
+            type="submit"
+            class="add-button"
+        >
+            💾 İşi Kaydet
+        </button>
+
+    </form>
+
+</div>
+
+
+<script>
+
+    const customerSelect =
+        document.getElementById("customer-select");
+
+    const folderSelect =
+        document.getElementById("folder-select");
+
+    const showCustomerCreate =
+        document.getElementById("show-customer-create");
+
+    const quickCustomerBox =
+        document.getElementById("quick-customer-box");
+
+    const newCustomerName =
+        document.getElementById("new-customer-name");
+
+    const createCustomerButton =
+        document.getElementById("create-customer-button");
+
+    const customerCreateMessage =
+        document.getElementById("customer-create-message");
+
+
+    async function loadFolders(customerId) {
+
+        folderSelect.innerHTML = "";
+
+        if (!customerId) {
+
+            folderSelect.disabled = true;
+
+            folderSelect.innerHTML = `
+                <option value="">
+                    Önce müşteri seçiniz
+                </option>
+            `;
+
+            return;
+
+        }
+
+
+        folderSelect.disabled = true;
+
+        folderSelect.innerHTML = `
+            <option value="">
+                Klasörler yükleniyor...
+            </option>
+        `;
+
+
+        try {
+
+            const response = await fetch(
+                `/api/customer/${customerId}/folders`
+            );
+
+            const folders = await response.json();
+
+
+            folderSelect.innerHTML = `
+                <option value="">
+                    Genel İşler
+                </option>
+            `;
+
+
+            folders.forEach(
+                function (folder) {
+
+                    const option =
+                        document.createElement("option");
+
+                    option.value = folder.id;
+
+                    option.textContent = folder.name;
+
+                    folderSelect.appendChild(option);
+
+                }
+            );
+
+
+            folderSelect.disabled = false;
+
+        }
+
+        catch (error) {
+
+            folderSelect.innerHTML = `
+                <option value="">
+                    Klasörler yüklenemedi
+                </option>
+            `;
+
+        }
+
+    }
+
+
+    customerSelect.addEventListener(
+        "change",
+        function () {
+
+            loadFolders(
+                customerSelect.value
+            );
+
+        }
+    );
+
+
+    showCustomerCreate.addEventListener(
+        "click",
+        function () {
+
+            if (
+                quickCustomerBox.style.display === "none"
+            ) {
+
+                quickCustomerBox.style.display = "block";
+
+                newCustomerName.focus();
+
+            }
+
+            else {
+
+                quickCustomerBox.style.display = "none";
+
+            }
+
+        }
+    );
+
+
+    createCustomerButton.addEventListener(
+        "click",
+        async function () {
+
+            const name =
+                newCustomerName.value.trim();
+
+
+            if (!name) {
+
+                customerCreateMessage.textContent =
+                    "Müşteri adını yaz.";
+
+                return;
+
+            }
+
+
+            createCustomerButton.disabled = true;
+
+            customerCreateMessage.textContent =
+                "Oluşturuluyor...";
+
+
+            try {
+
+                const response = await fetch(
+                    "/api/customers/create",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify(
+                            {
+                                name: name
+                            }
+                        )
+                    }
+                );
+
+
+                const data = await response.json();
+
+
+                if (!response.ok || !data.success) {
+
+                    customerCreateMessage.textContent =
+                        data.message || "Müşteri oluşturulamadı.";
+
+                    return;
+
+                }
+
+
+                let option = Array.from(
+                    customerSelect.options
+                ).find(
+                    function (item) {
+
+                        return item.value ==
+                            data.customer.id;
+
+                    }
+                );
+
+
+                if (!option) {
+
+                    option =
+                        document.createElement("option");
+
+                    option.value =
+                        data.customer.id;
+
+                    option.textContent =
+                        data.customer.name;
+
+                    customerSelect.appendChild(option);
+
+                }
+
+
+                customerSelect.value =
+                    data.customer.id;
+
+
+                newCustomerName.value = "";
+
+                customerCreateMessage.textContent =
+                    "✅ Müşteri oluşturuldu.";
+
+
+                await loadFolders(
+                    data.customer.id
+                );
+
+
+                setTimeout(
+                    function () {
+
+                        quickCustomerBox.style.display =
+                            "none";
+
+                        customerCreateMessage.textContent =
+                            "";
+
+                    },
+                    800
+                );
+
+            }
+
+            catch (error) {
+
+                customerCreateMessage.textContent =
+                    "Müşteri oluşturulamadı.";
+
+            }
+
+            finally {
+
+                createCustomerButton.disabled = false;
+
+            }
+
+        }
+    );
+
+</script>
 
 {% endblock %}

@@ -10,17 +10,31 @@
 
         <h1>🏭 {{ machine["name"] }}</h1>
 
-        <p>{{ machine["type"] }} | {{ machine["brand"] }} | {{ machine["model"] }}</p>
+        <p>
+            {{ machine["type"] }}
+            |
+            {{ machine["brand"] }}
+            |
+            {{ machine["model"] }}
+        </p>
 
     </div>
 
+
     <div>
 
-        <a href="/machine/{{ machine['id'] }}/add-job" class="add-button">
+        <a
+            href="/machine/{{ machine['id'] }}/add-job"
+            class="add-button"
+        >
             + Yeni İş
         </a>
 
-        <a href="/machines" class="add-button" style="margin-left:10px;">
+        <a
+            href="/machines"
+            class="add-button"
+            style="margin-left: 10px;"
+        >
             ← Geri
         </a>
 
@@ -28,41 +42,6 @@
 
 </div>
 
-<div class="cards">
-
-    <div class="card">
-        <h2>📦</h2>
-        <p>İşler</p>
-    </div>
-
-    <div class="card">
-        <h2>📄</h2>
-        <p>Teknik Resimler</p>
-    </div>
-
-    <div class="card">
-        <h2>💻</h2>
-        <p>NC Programları</p>
-    </div>
-
-    <div class="card">
-        <h2>📷</h2>
-        <p>Fotoğraflar</p>
-    </div>
-
-    <div class="card">
-        <h2>📝</h2>
-        <p>Notlar</p>
-    </div>
-
-    <div class="card">
-        <h2>🔧</h2>
-        <p>Bakımlar</p>
-    </div>
-
-</div>
-
-<br>
 
 <div class="machine-card">
 
@@ -70,19 +49,36 @@
 
     <br>
 
-    <p><b>Makine Tipi:</b> {{ machine["type"] }}</p>
+    <p>
+        <b>Makine Tipi:</b>
+        {{ machine["type"] }}
+    </p>
 
-    <p><b>Marka:</b> {{ machine["brand"] }}</p>
+    <p>
+        <b>Marka:</b>
+        {{ machine["brand"] }}
+    </p>
 
-    <p><b>Model:</b> {{ machine["model"] }}</p>
+    <p>
+        <b>Model:</b>
+        {{ machine["model"] }}
+    </p>
 
-    <p><b>Kontrol Ünitesi:</b> {{ machine["control_unit"] }}</p>
+    <p>
+        <b>Kontrol Ünitesi:</b>
+        {{ machine["control_unit"] }}
+    </p>
 
-    <p><b>Durum:</b> {{ machine["status"] }}</p>
+    <p>
+        <b>Durum:</b>
+        {{ machine["status"] }}
+    </p>
 
 </div>
 
+
 <br>
+
 
 <div class="page-header">
 
@@ -90,43 +86,68 @@
 
 </div>
 
+
 {% if jobs %}
 
     {% for job in jobs %}
 
-    <div class="machine-card">
+        <div class="machine-card">
 
-        <h2>
-            <a href="/job/{{ job['id'] }}" style="color:#00d4ff; text-decoration:none;">
-                {{ job["job_name"] }}
-            </a>
-        </h2>
+            <h2>
 
-        <p><b>Malzeme:</b> {{ job["material"] }}</p>
+                <a href="/job/{{ job['id'] }}">
 
-        <p><b>Adet:</b> {{ job["quantity"] }}</p>
+                    {{ job["job_name"] }}
 
-        <p><b>Üretim Tarihi:</b> {{ job["production_date"] }}</p>
+                </a>
 
-        <p><b>Teslim Tarihi:</b> {{ job["delivery_date"] }}</p>
+            </h2>
 
-        <p><b>Durum:</b> {{ job["status"] }}</p>
+            <p>
+                <b>Malzeme:</b>
+                {{ job["material"] }}
+            </p>
 
-    </div>
+            <p>
+                <b>Adet:</b>
+                {{ job["quantity"] }}
+            </p>
+
+            <p>
+                <b>▶️ Başlama:</b>
+                {{ job["start_date"] or "Belirtilmemiş" }}
+            </p>
+
+            <p>
+                <b>✅ Bitiş:</b>
+                {{ job["end_date"] or "Belirtilmemiş" }}
+            </p>
+
+            <p>
+                <b>🚚 Teslim:</b>
+                {{ job["delivery_date"] or "Belirtilmemiş" }}
+            </p>
+
+            <p>
+                <b>Durum:</b>
+                {{ job["status"] }}
+            </p>
+
+        </div>
 
     {% endfor %}
 
+
 {% else %}
 
-<div class="machine-card">
+    <div class="machine-card">
 
-    <h2>Henüz bu makineye ait iş bulunmuyor.</h2>
+        <h2>
+            Henüz bu makineye ait iş bulunmuyor.
+        </h2>
 
-    <p>İlk işi oluşturmak için yukarıdaki <b>+ Yeni İş</b> butonunu kullan.</p>
-
-</div>
+    </div>
 
 {% endif %}
-
 
 {% endblock %}

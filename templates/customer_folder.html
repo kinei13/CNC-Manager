@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{ customer["name"] }} - {{ folder["name"] }}
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>
+            📁 {{ customer["name"] }}
+            / {{ folder["name"] }}
+        </h1>
+
+        <p>
+            Teslim tarihine göre yıl arşivi
+        </p>
+
+    </div>
+
+    <a
+        href="/customer/{{ customer['id'] }}"
+        class="add-button"
+    >
+        ← Geri
+    </a>
+
+</div>
+
+
+{% if years %}
+
+    <div class="folder-grid">
+
+        {% for year in years %}
+
+            <a
+                href="/customer/{{ customer['id'] }}/folder/{{ folder['id'] }}/year/{{ year['year'] }}"
+                class="folder-card"
+            >
+
+                <div class="folder-icon">
+                    📁
+                </div>
+
+                <div>
+
+                    <h2>
+                        {{ year["year"] }}
+                    </h2>
+
+                    <p>
+                        {{ year["job_count"] }} iş
+                    </p>
+
+                </div>
+
+            </a>
+
+        {% endfor %}
+
+    </div>
+
+{% else %}
+
+    <div class="machine-card">
+
+        <p>
+            Bu klasörde teslim tarihi girilmiş iş bulunmuyor.
+        </p>
+
+    </div>
+
+{% endif %}
+
+{% endblock %}

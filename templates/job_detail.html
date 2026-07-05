@@ -41,9 +41,27 @@
         </a>
 
 
+        <form
+            method="POST"
+            action="/job/{{ job['id'] }}/delete"
+            style="display: inline;"
+            onsubmit="return confirm('Bu işi tamamen silmek istediğine emin misin? Teknik resimler, NC programları ve fotoğraflar da silinecek.');"
+        >
+
+            <button
+                type="submit"
+                class="delete-button"
+            >
+                🗑️ İşi Sil
+            </button>
+
+        </form>
+
+
         <a
             href="/machine/{{ job['machine_id'] }}"
             class="add-button"
+            style="margin-left: 10px;"
         >
             ← Geri
         </a>
@@ -129,14 +147,20 @@
 
 
     <p>
-        <b>📅 Üretim:</b>
-        {{ job["production_date"] }}
+        <b>▶️ İşe Başlama:</b>
+        {{ job["start_date"] or "Belirtilmemiş" }}
+    </p>
+
+
+    <p>
+        <b>✅ İşi Bitirme:</b>
+        {{ job["end_date"] or "Belirtilmemiş" }}
     </p>
 
 
     <p>
         <b>🚚 Teslim:</b>
-        {{ job["delivery_date"] }}
+        {{ job["delivery_date"] or "Belirtilmemiş" }}
     </p>
 
 
@@ -151,7 +175,9 @@
 
     <h3>📝 Notlar</h3>
 
-    <p>{{ job["notes"] }}</p>
+    <p>
+        {{ job["notes"] or "Not bulunmuyor." }}
+    </p>
 
 </div>
 
@@ -211,7 +237,6 @@
             </div>
 
         {% endfor %}
-
 
     {% else %}
 
@@ -279,7 +304,6 @@
             </div>
 
         {% endfor %}
-
 
     {% else %}
 
@@ -357,7 +381,6 @@
             {% endfor %}
 
         </div>
-
 
     {% else %}
 

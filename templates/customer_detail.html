@@ -1,0 +1,149 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ customer["name"] }}{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>
+            👤 {{ customer["name"] }}
+        </h1>
+
+        <p>
+            Müşteri iş ve proje arşivi
+        </p>
+
+    </div>
+
+    <a
+        href="/customers"
+        class="add-button"
+    >
+        ← Geri
+    </a>
+
+</div>
+
+
+<div class="machine-card">
+
+    <h2>🏢 Müşteri Bilgileri</h2>
+
+    <br>
+
+    <p>
+        <b>📞 Telefon:</b>
+        {{ customer["phone"] or "Belirtilmemiş" }}
+    </p>
+
+    <p>
+        <b>📧 E-Posta:</b>
+        {{ customer["email"] or "Belirtilmemiş" }}
+    </p>
+
+    <p>
+        <b>📍 Adres:</b>
+        {{ customer["address"] or "Belirtilmemiş" }}
+    </p>
+
+</div>
+
+
+<br>
+
+
+<div class="page-header">
+
+    <h2>📁 Klasörler / Projeler</h2>
+
+</div>
+
+
+<div class="machine-card">
+
+    <form method="POST">
+
+        <label>Yeni Klasör Adı</label>
+
+        <div class="quick-create-row">
+
+            <input
+                type="text"
+                name="folder_name"
+                placeholder="Örneğin: Baykar"
+                required
+            >
+
+            <button
+                type="submit"
+                class="add-button"
+            >
+                + Klasör Oluştur
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<div class="folder-grid">
+
+    <a
+        href="/customer/{{ customer['id'] }}/folder/0"
+        class="folder-card"
+    >
+
+        <div class="folder-icon">
+            📁
+        </div>
+
+        <div>
+
+            <h2>
+                Genel İşler
+            </h2>
+
+            <p>
+                {{ general_job_count }} iş
+            </p>
+
+        </div>
+
+    </a>
+
+
+    {% for folder in folders %}
+
+        <a
+            href="/customer/{{ customer['id'] }}/folder/{{ folder['id'] }}"
+            class="folder-card"
+        >
+
+            <div class="folder-icon">
+                📁
+            </div>
+
+            <div>
+
+                <h2>
+                    {{ folder["name"] }}
+                </h2>
+
+                <p>
+                    {{ folder["job_count"] }} iş
+                </p>
+
+            </div>
+
+        </a>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

@@ -30,9 +30,7 @@
 
     <form method="POST">
 
-        <label>
-            İş Adı
-        </label>
+        <label>İş Adı</label>
 
         <input
             type="text"
@@ -42,13 +40,10 @@
         >
 
 
-        <br>
-        <br>
+        <br><br>
 
 
-        <label>
-            Müşteri
-        </label>
+        <label>Müşteri</label>
 
         <select name="customer_id">
 
@@ -65,9 +60,7 @@
                         selected
                     {% endif %}
                 >
-
                     {{ customer["name"] }}
-
                 </option>
 
             {% endfor %}
@@ -75,13 +68,10 @@
         </select>
 
 
-        <br>
-        <br>
+        <br><br>
 
 
-        <label>
-            Malzeme
-        </label>
+        <label>Malzeme</label>
 
         <input
             type="text"
@@ -90,13 +80,10 @@
         >
 
 
-        <br>
-        <br>
+        <br><br>
 
 
-        <label>
-            Adet
-        </label>
+        <label>Adet</label>
 
         <input
             type="number"
@@ -106,43 +93,226 @@
         >
 
 
-        <br>
-        <br>
+        <br><br>
 
 
-        <label>
-            Üretim Tarihi
-        </label>
+        <label>▶️ İşe Başlama Tarihi</label>
 
-        <input
-            type="date"
-            name="production_date"
-            value="{{ job['production_date'] or '' }}"
-        >
+        <div class="date-select-row">
 
+            <select name="start_day">
 
-        <br>
-        <br>
+                <option value="">Gün</option>
 
+                {% for day in range(1, 32) %}
 
-        <label>
-            Teslim Tarihi
-        </label>
+                    <option
+                        value="{{ day }}"
 
-        <input
-            type="date"
-            name="delivery_date"
-            value="{{ job['delivery_date'] or '' }}"
-        >
+                        {% if start_parts["day"] == day %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ day }}
+                    </option>
 
+                {% endfor %}
 
-        <br>
-        <br>
+            </select>
 
 
-        <label>
-            Durum
-        </label>
+            <select name="start_month">
+
+                <option value="">Ay</option>
+
+                {% for month_number, month_name in months.items() %}
+
+                    <option
+                        value="{{ month_number }}"
+
+                        {% if start_parts["month"] == month_number %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ month_name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <select name="start_year">
+
+                <option value="">Yıl</option>
+
+                {% for year in years|reverse %}
+
+                    <option
+                        value="{{ year }}"
+
+                        {% if start_parts["year"] == year %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ year }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <br><br>
+
+
+        <label>✅ İşi Bitirme Tarihi</label>
+
+        <div class="date-select-row">
+
+            <select name="end_day">
+
+                <option value="">Gün</option>
+
+                {% for day in range(1, 32) %}
+
+                    <option
+                        value="{{ day }}"
+
+                        {% if end_parts["day"] == day %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ day }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <select name="end_month">
+
+                <option value="">Ay</option>
+
+                {% for month_number, month_name in months.items() %}
+
+                    <option
+                        value="{{ month_number }}"
+
+                        {% if end_parts["month"] == month_number %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ month_name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <select name="end_year">
+
+                <option value="">Yıl</option>
+
+                {% for year in years|reverse %}
+
+                    <option
+                        value="{{ year }}"
+
+                        {% if end_parts["year"] == year %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ year }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <br><br>
+
+
+        <label>🚚 Teslim Tarihi</label>
+
+        <div class="date-select-row">
+
+            <select name="delivery_day">
+
+                <option value="">Gün</option>
+
+                {% for day in range(1, 32) %}
+
+                    <option
+                        value="{{ day }}"
+
+                        {% if delivery_parts["day"] == day %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ day }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <select name="delivery_month">
+
+                <option value="">Ay</option>
+
+                {% for month_number, month_name in months.items() %}
+
+                    <option
+                        value="{{ month_number }}"
+
+                        {% if delivery_parts["month"] == month_number %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ month_name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <select name="delivery_year">
+
+                <option value="">Yıl</option>
+
+                {% for year in years|reverse %}
+
+                    <option
+                        value="{{ year }}"
+
+                        {% if delivery_parts["year"] == year %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ year }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+
+        <br><br>
+
+
+        <label>Durum</label>
 
         <select name="status">
 
@@ -192,13 +362,10 @@
         </select>
 
 
-        <br>
-        <br>
+        <br><br>
 
 
-        <label>
-            Notlar
-        </label>
+        <label>Notlar</label>
 
         <textarea
             name="notes"
@@ -206,8 +373,7 @@
         >{{ job["notes"] or "" }}</textarea>
 
 
-        <br>
-        <br>
+        <br><br>
 
 
         <button
