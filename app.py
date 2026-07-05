@@ -3,7 +3,8 @@ from flask import (
     render_template,
     request,
     redirect,
-    send_from_directory
+    send_from_directory,
+    abort
 )
 
 import sqlite3
@@ -21,11 +22,36 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["MAX_CONTENT_LENGTH"] = 100 * 1024 * 1024
 
 
+FILE_TABLES = {
+    "drawing": "drawings",
+    "program": "programs",
+    "photo": "photos"
+}
+
+
 def get_connection():
     conn = sqlite3.connect("database/cnc.db")
     conn.row_factory = sqlite3.Row
 
     return conn
+
+
+def delete_physical_file(file_path):
+    upload_root = os.path.abspath(
+        app.config["UPLOAD_FOLDER"]
+    )
+
+    absolute_file_path = os.path.abspath(
+        file_path
+    )
+
+    if os.path.commonpath(
+        [upload_root, absolute_file_path]
+    ) != upload_root:
+        return
+
+    if os.path.isfile(absolute_file_path):
+        os.remove(absolute_file_path)
 
 
 # =====================================================
@@ -97,6 +123,10 @@ def machine_detail(id):
     )
 
     machine = cursor.fetchone()
+
+    if machine is None:
+        conn.close()
+        abort(404)
 
     cursor.execute(
         """
@@ -381,6 +411,10 @@ def job_detail(id):
 
     job = cursor.fetchone()
 
+    if job is None:
+        conn.close()
+        abort(404)
+
     cursor.execute(
         """
         SELECT *
@@ -440,10 +474,9 @@ def upload_drawing(job_id):
 
     if request.method == "POST":
 
-        file = request.files["drawing"]
+        file = request.files.get("drawing")
 
-        if file.filename == "":
-
+        if not file or file.filename == "":
             return redirect(
                 f"/job/{job_id}"
             )
@@ -519,10 +552,9 @@ def upload_program(job_id):
 
     if request.method == "POST":
 
-        file = request.files["program"]
+        file = request.files.get("program")
 
-        if file.filename == "":
-
+        if not file or file.filename == "":
             return redirect(
                 f"/job/{job_id}"
             )
@@ -663,6 +695,64 @@ def upload_photo(job_id):
     return render_template(
         "upload_photo.html",
         job_id=job_id
+    )
+
+
+# =====================================================
+# DOSYA SİL
+# =====================================================
+
+@app.route(
+    "/delete-file/<file_type>/<int:file_id>",
+    methods=["POST"]
+)
+def delete_file(file_type, file_id):
+
+    table_name = FILE_TABLES.get(
+        file_type
+    )
+
+    if table_name is None:
+        abort(404)
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        f"""
+        SELECT *
+        FROM {table_name}
+        WHERE id=?
+        """,
+        (file_id,)
+    )
+
+    file_record = cursor.fetchone()
+
+    if file_record is None:
+        conn.close()
+        abort(404)
+
+    job_id = file_record["job_id"]
+    file_path = file_record["file_path"]
+
+    delete_physical_file(
+        file_path
+    )
+
+    cursor.execute(
+        f"""
+        DELETE FROM {table_name}
+        WHERE id=?
+        """,
+        (file_id,)
+    )
+
+    conn.commit()
+    conn.close()
+
+    return redirect(
+        f"/job/{job_id}"
     )
 
 

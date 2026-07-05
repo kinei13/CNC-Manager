@@ -153,18 +153,31 @@
 
         {% for drawing in drawings %}
 
-            <p>
-
-                📄
+            <div class="file-row">
 
                 <a
                     href="/uploads/{{ drawing['file_path'] }}"
                     target="_blank"
                 >
-                    {{ drawing["file_name"] }}
+                    📄 {{ drawing["file_name"] }}
                 </a>
 
-            </p>
+                <form
+                    method="POST"
+                    action="/delete-file/drawing/{{ drawing['id'] }}"
+                    onsubmit="return confirm('Bu teknik resmi silmek istediğine emin misin?');"
+                >
+
+                    <button
+                        type="submit"
+                        class="delete-button"
+                    >
+                        🗑️ Sil
+                    </button>
+
+                </form>
+
+            </div>
 
         {% endfor %}
 
@@ -205,18 +218,31 @@
 
         {% for program in programs %}
 
-            <p>
-
-                💻
+            <div class="file-row">
 
                 <a
                     href="/uploads/{{ program['file_path'] }}"
                     target="_blank"
                 >
-                    {{ program["file_name"] }}
+                    💻 {{ program["file_name"] }}
                 </a>
 
-            </p>
+                <form
+                    method="POST"
+                    action="/delete-file/program/{{ program['id'] }}"
+                    onsubmit="return confirm('Bu NC programını silmek istediğine emin misin?');"
+                >
+
+                    <button
+                        type="submit"
+                        class="delete-button"
+                    >
+                        🗑️ Sil
+                    </button>
+
+                </form>
+
+            </div>
 
         {% endfor %}
 
@@ -259,18 +285,37 @@
 
             {% for photo in photos %}
 
-                <a
-                    href="/uploads/{{ photo['file_path'] }}"
-                    target="_blank"
-                >
+                <div class="photo-item">
 
-                    <img
-                        src="/uploads/{{ photo['file_path'] }}"
-                        alt="{{ photo['file_name'] }}"
-                        class="job-photo"
+                    <a
+                        href="/uploads/{{ photo['file_path'] }}"
+                        target="_blank"
                     >
 
-                </a>
+                        <img
+                            src="/uploads/{{ photo['file_path'] }}"
+                            alt="{{ photo['file_name'] }}"
+                            class="job-photo"
+                        >
+
+                    </a>
+
+                    <form
+                        method="POST"
+                        action="/delete-file/photo/{{ photo['id'] }}"
+                        onsubmit="return confirm('Bu fotoğrafı silmek istediğine emin misin?');"
+                    >
+
+                        <button
+                            type="submit"
+                            class="delete-button photo-delete-button"
+                        >
+                            🗑️ Sil
+                        </button>
+
+                    </form>
+
+                </div>
 
             {% endfor %}
 
