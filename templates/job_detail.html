@@ -79,9 +79,39 @@
 <br>
 
 <div class="machine-card">
-    <h2>💻 NC Programları</h2>
+
+    <div class="page-header">
+
+        <h2>💻 NC Programları</h2>
+
+        <a href="/job/{{ job['id'] }}/upload-program" class="add-button">
+            + Program Yükle
+        </a>
+
+    </div>
+
+    <hr>
     <br>
-    <p>Yakında eklenecek.</p>
+
+    {% if programs %}
+
+        {% for program in programs %}
+
+            <p>
+                💻
+                <a href="/uploads/{{ program['file_path'] }}" target="_blank">
+                    {{ program["file_name"] }}
+                </a>
+            </p>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>Henüz NC programı yüklenmedi.</p>
+
+    {% endif %}
+
 </div>
 
 <br>

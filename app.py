@@ -210,9 +210,17 @@ def job_detail(id):
     cursor.execute("SELECT * FROM drawings WHERE job_id=? ORDER BY id DESC", (id,))
     drawings = cursor.fetchall()
 
+    cursor.execute("SELECT * FROM programs WHERE job_id=? ORDER BY id DESC", (id,))
+    programs = cursor.fetchall()
+
     conn.close()
 
-    return render_template("job_detail.html", job=job, drawings=drawings)
+    return render_template(
+        "job_detail.html",
+        job=job,
+        drawings=drawings,
+        programs=programs
+    )
 
 
 @app.route("/job/<int:job_id>/upload-drawing", methods=["GET", "POST"])
@@ -250,6 +258,43 @@ def upload_drawing(job_id):
         return redirect(f"/job/{job_id}")
 
     return render_template("upload_drawing.html", job_id=job_id)
+
+
+@app.route("/job/<int:job_id>/upload-program", methods=["GET", "POST"])
+def upload_program(job_id):
+    if request.method == "POST":
+        file = request.files["program"]
+
+        if file.filename == "":
+            return redirect(f"/job/{job_id}")
+
+        filename = secure_filename(file.filename)
+
+        folder_path = os.path.join(app.config["UPLOAD_FOLDER"], f"job_{job_id}", "programs")
+        os.makedirs(folder_path, exist_ok=True)
+
+        file_path = os.path.join(folder_path, filename)
+        file.save(file_path)
+
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            INSERT INTO programs (job_id, file_name, file_path, upload_date)
+            VALUES (?, ?, ?, ?)
+        """, (
+            job_id,
+            filename,
+            file_path,
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        ))
+
+        conn.commit()
+        conn.close()
+
+        return redirect(f"/job/{job_id}")
+
+    return render_template("upload_program.html", job_id=job_id)
 
 
 @app.route("/uploads/<path:filename>")

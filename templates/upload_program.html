@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}Program Yükle{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>💻 NC Programı Yükle</h1>
+
+    <a href="/job/{{ job_id }}" class="add-button">
+        ← Geri
+    </a>
+</div>
+
+<form method="POST" enctype="multipart/form-data">
+
+    <label>NC Program Dosyası</label>
+
+    <input type="file" name="program" required>
+
+    <br><br>
+
+    <button class="add-button">
+        💾 Yükle
+    </button>
+
+</form>
+
+{% endblock %}
