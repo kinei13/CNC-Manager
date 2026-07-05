@@ -117,6 +117,27 @@ BUTONLAR
 }
 
 
+.edit-button {
+    display: inline-block;
+    background: #1f6feb;
+    color: white;
+    text-decoration: none;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.25s;
+    margin-right: 10px;
+}
+
+
+.edit-button:hover {
+    background: #388bfd;
+    transform: scale(1.03);
+}
+
+
 .delete-button {
     background: #da3633;
     color: white;
@@ -430,6 +451,12 @@ MOBİL
 
     .file-row .delete-button {
         width: 100%;
+    }
+
+
+    .edit-button {
+        margin-right: 0;
+        margin-bottom: 10px;
     }
 
 }

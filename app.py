@@ -481,6 +481,90 @@ def job_detail(id):
 
 
 # =====================================================
+# İŞ DÜZENLE
+# =====================================================
+
+@app.route(
+    "/job/<int:id>/edit",
+    methods=["GET", "POST"]
+)
+def edit_job(id):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT * FROM jobs WHERE id=?",
+        (id,)
+    )
+
+    job = cursor.fetchone()
+
+    if job is None:
+        conn.close()
+        abort(404)
+
+    if request.method == "POST":
+
+        customer_id = request.form.get(
+            "customer_id"
+        )
+
+        if customer_id == "":
+            customer_id = None
+
+        cursor.execute(
+            """
+            UPDATE jobs
+
+            SET
+                customer_id=?,
+                job_name=?,
+                material=?,
+                quantity=?,
+                production_date=?,
+                delivery_date=?,
+                status=?,
+                notes=?
+
+            WHERE id=?
+            """,
+            (
+                customer_id,
+                request.form["job_name"],
+                request.form["material"],
+                request.form["quantity"],
+                request.form["production_date"],
+                request.form["delivery_date"],
+                request.form["status"],
+                request.form["notes"],
+                id
+            )
+        )
+
+        conn.commit()
+        conn.close()
+
+        return redirect(
+            f"/job/{id}"
+        )
+
+    cursor.execute(
+        "SELECT * FROM customers ORDER BY name"
+    )
+
+    customers = cursor.fetchall()
+
+    conn.close()
+
+    return render_template(
+        "edit_job.html",
+        job=job,
+        customers=customers
+    )
+
+
+# =====================================================
 # TEKNİK RESİM YÜKLE
 # =====================================================
 

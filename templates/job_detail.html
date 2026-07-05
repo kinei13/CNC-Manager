@@ -11,23 +11,44 @@
         <h1>📦 {{ job["job_name"] }}</h1>
 
         <p>
+
             {{ job["machine_name"] }}
+
             |
+
             {% if job["customer_name"] %}
+
                 {{ job["customer_name"] }}
+
             {% else %}
+
                 Müşteri belirtilmemiş
+
             {% endif %}
+
         </p>
 
     </div>
 
-    <a
-        href="/machine/{{ job['machine_id'] }}"
-        class="add-button"
-    >
-        ← Geri
-    </a>
+
+    <div>
+
+        <a
+            href="/job/{{ job['id'] }}/edit"
+            class="edit-button"
+        >
+            ✏️ İşi Düzenle
+        </a>
+
+
+        <a
+            href="/machine/{{ job['machine_id'] }}"
+            class="add-button"
+        >
+            ← Geri
+        </a>
+
+    </div>
 
 </div>
 
@@ -77,6 +98,7 @@
         {{ job["machine_name"] }}
     </p>
 
+
     <p>
 
         <b>👤 Müşteri:</b>
@@ -93,32 +115,39 @@
 
     </p>
 
+
     <p>
         <b>🧱 Malzeme:</b>
         {{ job["material"] }}
     </p>
+
 
     <p>
         <b>📦 Adet:</b>
         {{ job["quantity"] }}
     </p>
 
+
     <p>
         <b>📅 Üretim:</b>
         {{ job["production_date"] }}
     </p>
+
 
     <p>
         <b>🚚 Teslim:</b>
         {{ job["delivery_date"] }}
     </p>
 
+
     <p>
         <b>📌 Durum:</b>
         {{ job["status"] }}
     </p>
 
+
     <br>
+
 
     <h3>📝 Notlar</h3>
 
@@ -149,6 +178,7 @@
 
     <br>
 
+
     {% if drawings %}
 
         {% for drawing in drawings %}
@@ -161,6 +191,7 @@
                 >
                     📄 {{ drawing["file_name"] }}
                 </a>
+
 
                 <form
                     method="POST"
@@ -180,6 +211,7 @@
             </div>
 
         {% endfor %}
+
 
     {% else %}
 
@@ -214,6 +246,7 @@
 
     <br>
 
+
     {% if programs %}
 
         {% for program in programs %}
@@ -226,6 +259,7 @@
                 >
                     💻 {{ program["file_name"] }}
                 </a>
+
 
                 <form
                     method="POST"
@@ -245,6 +279,7 @@
             </div>
 
         {% endfor %}
+
 
     {% else %}
 
@@ -279,6 +314,7 @@
 
     <br>
 
+
     {% if photos %}
 
         <div class="photo-gallery">
@@ -300,6 +336,7 @@
 
                     </a>
 
+
                     <form
                         method="POST"
                         action="/delete-file/photo/{{ photo['id'] }}"
@@ -320,6 +357,7 @@
             {% endfor %}
 
         </div>
+
 
     {% else %}
 

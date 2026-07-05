@@ -1,0 +1,224 @@
+{% extends "layout.html" %}
+
+{% block title %}İşi Düzenle{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>✏️ İşi Düzenle</h1>
+
+        <p>
+            {{ job["job_name"] }}
+        </p>
+
+    </div>
+
+    <a
+        href="/job/{{ job['id'] }}"
+        class="add-button"
+    >
+        ← Geri
+    </a>
+
+</div>
+
+
+<div class="machine-card">
+
+    <form method="POST">
+
+        <label>
+            İş Adı
+        </label>
+
+        <input
+            type="text"
+            name="job_name"
+            value="{{ job['job_name'] }}"
+            required
+        >
+
+
+        <br>
+        <br>
+
+
+        <label>
+            Müşteri
+        </label>
+
+        <select name="customer_id">
+
+            <option value="">
+                Müşteri Belirtilmemiş
+            </option>
+
+            {% for customer in customers %}
+
+                <option
+                    value="{{ customer['id'] }}"
+
+                    {% if job["customer_id"] == customer["id"] %}
+                        selected
+                    {% endif %}
+                >
+
+                    {{ customer["name"] }}
+
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+
+        <br>
+        <br>
+
+
+        <label>
+            Malzeme
+        </label>
+
+        <input
+            type="text"
+            name="material"
+            value="{{ job['material'] or '' }}"
+        >
+
+
+        <br>
+        <br>
+
+
+        <label>
+            Adet
+        </label>
+
+        <input
+            type="number"
+            name="quantity"
+            value="{{ job['quantity'] or '' }}"
+            min="0"
+        >
+
+
+        <br>
+        <br>
+
+
+        <label>
+            Üretim Tarihi
+        </label>
+
+        <input
+            type="date"
+            name="production_date"
+            value="{{ job['production_date'] or '' }}"
+        >
+
+
+        <br>
+        <br>
+
+
+        <label>
+            Teslim Tarihi
+        </label>
+
+        <input
+            type="date"
+            name="delivery_date"
+            value="{{ job['delivery_date'] or '' }}"
+        >
+
+
+        <br>
+        <br>
+
+
+        <label>
+            Durum
+        </label>
+
+        <select name="status">
+
+            <option
+                value="Devam Ediyor"
+
+                {% if job["status"] == "Devam Ediyor" %}
+                    selected
+                {% endif %}
+            >
+                Devam Ediyor
+            </option>
+
+
+            <option
+                value="Bekliyor"
+
+                {% if job["status"] == "Bekliyor" %}
+                    selected
+                {% endif %}
+            >
+                Bekliyor
+            </option>
+
+
+            <option
+                value="Tamamlandı"
+
+                {% if job["status"] == "Tamamlandı" %}
+                    selected
+                {% endif %}
+            >
+                Tamamlandı
+            </option>
+
+
+            <option
+                value="İptal"
+
+                {% if job["status"] == "İptal" %}
+                    selected
+                {% endif %}
+            >
+                İptal
+            </option>
+
+        </select>
+
+
+        <br>
+        <br>
+
+
+        <label>
+            Notlar
+        </label>
+
+        <textarea
+            name="notes"
+            rows="7"
+        >{{ job["notes"] or "" }}</textarea>
+
+
+        <br>
+        <br>
+
+
+        <button
+            type="submit"
+            class="add-button"
+        >
+            💾 Değişiklikleri Kaydet
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}
