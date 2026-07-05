@@ -12,19 +12,26 @@ Dashboard
 
         <h1>👋 Hoş Geldin Kingo</h1>
 
-        <p style="margin-top:10px;color:#9ca3af;">
-            CNC Manager ERP sistemine hoş geldin.
+        <p
+            style="
+                margin-top: 10px;
+                color: #9ca3af;
+            "
+        >
+            CNC Manager üretim yönetim sistemine hoş geldin.
         </p>
 
     </div>
 
-    <a href="/add-machine" class="add-button">
-
+    <a
+        href="/add-machine"
+        class="add-button"
+    >
         + Yeni Makine
-
     </a>
 
 </div>
+
 
 <div class="cards">
 
@@ -36,48 +43,49 @@ Dashboard
 
     </div>
 
+
     <div class="card">
 
-        <h2>0</h2>
+        <h2>{{ job_count }}</h2>
 
         <p>İş</p>
 
     </div>
 
+
     <div class="card">
 
-        <h2>0</h2>
+        <h2>{{ customer_count }}</h2>
 
         <p>Müşteri</p>
 
     </div>
 
+
     <div class="card">
 
-        <h2>0</h2>
+        <h2>{{ pending_count }}</h2>
 
-        <p>Bekleyen</p>
+        <p>Devam Eden İş</p>
 
     </div>
 
 </div>
 
-<br><br>
+
+<br>
+<br>
+
 
 <div class="machine-card">
 
-    <h2>🚀 CNC Manager ERP</h2>
+    <h2>🚀 CNC Manager</h2>
 
     <br>
 
     <p>
-        Hoş geldin Kingo.
-    </p>
-
-    <br>
-
-    <p>
-        Bu sistem sayesinde tüm üretim süreçlerini tek yerden yönetebileceksin.
+        Üretim kayıtlarını, müşterileri, işleri ve
+        iş dosyalarını tek sistem üzerinden yönetebilirsin.
     </p>
 
 </div>

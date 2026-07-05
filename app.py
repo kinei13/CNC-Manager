@@ -64,14 +64,31 @@ def home():
     conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT COUNT(*) FROM machines")
+    cursor.execute(
+        "SELECT COUNT(*) FROM machines"
+    )
     machine_count = cursor.fetchone()[0]
 
-    cursor.execute("SELECT COUNT(*) FROM customers")
+    cursor.execute(
+        "SELECT COUNT(*) FROM customers"
+    )
     customer_count = cursor.fetchone()[0]
 
-    cursor.execute("SELECT COUNT(*) FROM jobs")
+    cursor.execute(
+        "SELECT COUNT(*) FROM jobs"
+    )
     job_count = cursor.fetchone()[0]
+
+    cursor.execute(
+        """
+        SELECT COUNT(*)
+        FROM jobs
+        WHERE status = ?
+        """,
+        ("Devam Ediyor",)
+    )
+
+    pending_count = cursor.fetchone()[0]
 
     conn.close()
 
@@ -79,7 +96,8 @@ def home():
         "index.html",
         machine_count=machine_count,
         customer_count=customer_count,
-        job_count=job_count
+        job_count=job_count,
+        pending_count=pending_count
     )
 
 
