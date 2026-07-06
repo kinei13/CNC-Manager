@@ -18,14 +18,76 @@
 
     </div>
 
-    <a
-        href="/customers"
-        class="add-button"
-    >
-        ← Geri
-    </a>
+
+    <div class="customer-header-actions">
+
+        <a
+            href="/customer/{{ customer['id'] }}/edit"
+            class="edit-button"
+        >
+            ✏️ Müşteriyi Düzenle
+        </a>
+
+
+        <form
+            method="POST"
+            action="/customer/{{ customer['id'] }}/delete"
+            onsubmit="return confirm('Bu müşteriyi tamamen silmek istediğine emin misin?');"
+        >
+
+            <button
+                type="submit"
+                class="delete-button"
+            >
+                🗑️ Müşteriyi Sil
+            </button>
+
+        </form>
+
+
+        <a
+            href="/customers"
+            class="add-button"
+        >
+            ← Geri
+        </a>
+
+    </div>
 
 </div>
+
+
+{% if error == "customer_has_jobs" %}
+
+    <div class="error-message">
+
+        ⛔ Bu müşteriye bağlı işler olduğu için müşteri silinemez.
+
+    </div>
+
+{% endif %}
+
+
+{% if error == "folder_has_jobs" %}
+
+    <div class="error-message">
+
+        ⛔ Bu klasör / projeye bağlı işler olduğu için klasör silinemez.
+
+    </div>
+
+{% endif %}
+
+
+{% if error == "duplicate_folder" %}
+
+    <div class="error-message">
+
+        ⛔ Bu müşteride aynı isimde başka bir klasör / proje zaten var.
+
+    </div>
+
+{% endif %}
 
 
 <div class="machine-card">
@@ -49,6 +111,11 @@
         {{ customer["address"] or "Belirtilmemiş" }}
     </p>
 
+    <p>
+        <b>📝 Not:</b>
+        {{ customer["notes"] or "Belirtilmemiş" }}
+    </p>
+
 </div>
 
 
@@ -66,7 +133,7 @@
 
     <form method="POST">
 
-        <label>Yeni Klasör Adı</label>
+        <label>Yeni Klasör / Proje Adı</label>
 
         <div class="quick-create-row">
 
@@ -119,31 +186,132 @@
 
     {% for folder in folders %}
 
-        <a
-            href="/customer/{{ customer['id'] }}/folder/{{ folder['id'] }}"
-            class="folder-card"
-        >
+        <div class="folder-manage-card">
 
-            <div class="folder-icon">
-                📁
+            <a
+                href="/customer/{{ customer['id'] }}/folder/{{ folder['id'] }}"
+                class="folder-main-link"
+            >
+
+                <div class="folder-icon">
+                    📁
+                </div>
+
+                <div>
+
+                    <h2>
+                        {{ folder["name"] }}
+                    </h2>
+
+                    <p>
+                        {{ folder["job_count"] }} iş
+                    </p>
+
+                </div>
+
+            </a>
+
+
+            <div class="folder-actions">
+
+                <button
+                    type="button"
+                    class="small-action-button"
+                    onclick="toggleFolderEdit({{ folder['id'] }})"
+                >
+                    ✏️ Düzenle
+                </button>
+
+
+                <form
+                    method="POST"
+                    action="/customer/{{ customer['id'] }}/folder/{{ folder['id'] }}/delete"
+                    onsubmit="return confirm('Bu klasör / projeyi silmek istediğine emin misin?');"
+                >
+
+                    <button
+                        type="submit"
+                        class="delete-button"
+                    >
+                        🗑️ Sil
+                    </button>
+
+                </form>
+
             </div>
 
-            <div>
 
-                <h2>
-                    {{ folder["name"] }}
-                </h2>
+            <div
+                id="folder-edit-{{ folder['id'] }}"
+                class="folder-edit-box"
+                style="display: none;"
+            >
 
-                <p>
-                    {{ folder["job_count"] }} iş
-                </p>
+                <form
+                    method="POST"
+                    action="/customer/{{ customer['id'] }}/folder/{{ folder['id'] }}/edit"
+                >
+
+                    <div class="quick-create-row">
+
+                        <input
+                            type="text"
+                            name="folder_name"
+                            value="{{ folder['name'] }}"
+                            required
+                        >
+
+                        <button
+                            type="submit"
+                            class="add-button"
+                        >
+                            💾 Kaydet
+                        </button>
+
+                    </div>
+
+                </form>
 
             </div>
 
-        </a>
+        </div>
 
     {% endfor %}
 
 </div>
+
+
+<script>
+
+    function toggleFolderEdit(folderId) {
+
+        const editBox =
+            document.getElementById(
+                `folder-edit-${folderId}`
+            );
+
+
+        if (editBox.style.display === "none") {
+
+            editBox.style.display = "block";
+
+            const input =
+                editBox.querySelector("input");
+
+            input.focus();
+
+            input.select();
+
+        }
+
+        else {
+
+            editBox.style.display = "none";
+
+        }
+
+    }
+
+</script>
 
 {% endblock %}

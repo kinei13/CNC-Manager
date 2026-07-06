@@ -6,7 +6,18 @@
 
 <div class="page-header">
 
-    <h1>📦 Tüm İşler</h1>
+    <div>
+
+        <h1>
+            📦 Tüm İşler
+        </h1>
+
+        <p>
+            İşleri filtrele, sırala ve takip et
+        </p>
+
+    </div>
+
 
     <a
         href="/add-job"
@@ -18,58 +29,275 @@
 </div>
 
 
-{% if jobs %}
+<div class="machine-card">
+
+    <h2>
+        🔎 İşleri Filtrele
+    </h2>
+
+
+    <div class="job-filter-grid">
+
+        <div>
+
+            <label>
+                İş / Malzeme Ara
+            </label>
+
+            <input
+                type="text"
+                id="job-search"
+                placeholder="Örneğin: mil, 304, flanş..."
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <div>
+
+            <label>
+                🏭 Makine
+            </label>
+
+            <select id="machine-filter">
+
+                <option value="">
+                    Tüm Makineler
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div>
+
+            <label>
+                👤 Müşteri
+            </label>
+
+            <select id="customer-filter">
+
+                <option value="">
+                    Tüm Müşteriler
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div>
+
+            <label>
+                📌 Durum
+            </label>
+
+            <select id="status-filter">
+
+                <option value="">
+                    Tüm Durumlar
+                </option>
+
+                <option value="devam ediyor">
+                    Devam Ediyor
+                </option>
+
+                <option value="tamamlandı">
+                    Tamamlandı
+                </option>
+
+                <option value="beklemede">
+                    Beklemede
+                </option>
+
+                <option value="iptal">
+                    İptal
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div>
+
+            <label>
+                ↕️ Sıralama
+            </label>
+
+            <select id="sort-filter">
+
+                <option value="newest">
+                    En Yeni Eklenen
+                </option>
+
+                <option value="oldest">
+                    En Eski Eklenen
+                </option>
+
+                <option value="delivery">
+                    Teslim Tarihi Yakın
+                </option>
+
+                <option value="name-asc">
+                    İş Adı A-Z
+                </option>
+
+                <option value="name-desc">
+                    İş Adı Z-A
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <div class="job-filter-footer">
+
+        <p id="job-result-count">
+            0 iş gösteriliyor
+        </p>
+
+
+        <button
+            type="button"
+            class="small-action-button"
+            id="clear-filters"
+        >
+            Filtreleri Temizle
+        </button>
+
+    </div>
+
+</div>
+
+
+<div id="jobs-container">
 
     {% for job in jobs %}
 
         <a
             href="/job/{{ job['id'] }}"
-            style="
-                text-decoration: none;
-                color: inherit;
-            "
+            class="job-list-link"
+            data-job-id="{{ job['id'] }}"
+            data-job-name="{{ job['job_name']|lower }}"
+            data-material="{{ (job['material'] or '')|lower }}"
+            data-machine="{{ (job['machine_name'] or '')|lower }}"
+            data-customer="{{ (job['customer_name'] or '')|lower }}"
+            data-status="{{ (job['status'] or '')|lower }}"
+            data-delivery="{{ job['delivery_date'] or '' }}"
         >
 
-            <div class="machine-card">
+            <div class="machine-card job-list-card">
 
-                <h2>
-                    {{ job["job_name"] }}
-                </h2>
+                <div class="job-list-header">
 
-                <p>
-                    <b>🏭 Makine:</b>
-                    {{ job["machine_name"] }}
-                </p>
+                    <div>
 
-                <p>
-                    <b>👤 Müşteri:</b>
-                    {{ job["customer_name"] or "Belirtilmemiş" }}
-                </p>
+                        <h2>
+                            📦 {{ job["job_name"] }}
+                        </h2>
 
-                <p>
-                    <b>📁 Klasör:</b>
-                    {{ job["folder_name"] or "Genel İşler" }}
-                </p>
 
-                <p>
-                    <b>🧱 Malzeme:</b>
-                    {{ job["material"] }}
-                </p>
+                        <p class="job-list-path">
 
-                <p>
-                    <b>📦 Adet:</b>
-                    {{ job["quantity"] }}
-                </p>
+                            {{ job["customer_name"] or "Müşteri Belirtilmemiş" }}
 
-                <p>
-                    <b>🚚 Teslim:</b>
-                    {{ job["delivery_date"] or "Belirtilmemiş" }}
-                </p>
+                            →
 
-                <p>
-                    <b>📌 Durum:</b>
-                    {{ job["status"] }}
-                </p>
+                            {{ job["folder_name"] or "Genel İşler" }}
+
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="
+                            job-status-badge
+
+                            {% if job['status'] == 'Tamamlandı' %}
+                                status-completed
+
+                            {% elif job['status'] == 'Beklemede' %}
+                                status-waiting
+
+                            {% elif job['status'] == 'İptal' %}
+                                status-cancelled
+
+                            {% else %}
+                                status-active
+                            {% endif %}
+                        "
+                    >
+
+                        {{ job["status"] }}
+
+                    </div>
+
+                </div>
+
+
+                <div class="job-list-info-grid">
+
+                    <p>
+
+                        <b>🏭 Makine:</b>
+
+                        {{ job["machine_name"] }}
+
+                    </p>
+
+
+                    <p>
+
+                        <b>👤 Müşteri:</b>
+
+                        {{ job["customer_name"] or "Belirtilmemiş" }}
+
+                    </p>
+
+
+                    <p>
+
+                        <b>📁 Klasör:</b>
+
+                        {{ job["folder_name"] or "Genel İşler" }}
+
+                    </p>
+
+
+                    <p>
+
+                        <b>🧱 Malzeme:</b>
+
+                        {{ job["material"] or "Belirtilmemiş" }}
+
+                    </p>
+
+
+                    <p>
+
+                        <b>📦 Adet:</b>
+
+                        {{ job["quantity"] or "Belirtilmemiş" }}
+
+                    </p>
+
+
+                    <p>
+
+                        <b>🚚 Teslim:</b>
+
+                        {{ job["delivery_date"] or "Belirtilmemiş" }}
+
+                    </p>
+
+                </div>
 
             </div>
 
@@ -77,16 +305,496 @@
 
     {% endfor %}
 
-{% else %}
+</div>
 
-    <div class="machine-card">
 
-        <h2>
-            Henüz kayıtlı iş bulunmuyor.
-        </h2>
+<div
+    id="no-job-result"
+    class="machine-card"
+    style="display: none;"
+>
 
-    </div>
+    <h2>
+        🔎 İş Bulunamadı
+    </h2>
 
-{% endif %}
+    <p>
+        Seçilen filtrelere uygun iş bulunmuyor.
+    </p>
+
+</div>
+
+
+<script>
+
+    const jobSearch =
+        document.getElementById(
+            "job-search"
+        );
+
+    const machineFilter =
+        document.getElementById(
+            "machine-filter"
+        );
+
+    const customerFilter =
+        document.getElementById(
+            "customer-filter"
+        );
+
+    const statusFilter =
+        document.getElementById(
+            "status-filter"
+        );
+
+    const sortFilter =
+        document.getElementById(
+            "sort-filter"
+        );
+
+    const clearFiltersButton =
+        document.getElementById(
+            "clear-filters"
+        );
+
+    const jobsContainer =
+        document.getElementById(
+            "jobs-container"
+        );
+
+    const noJobResult =
+        document.getElementById(
+            "no-job-result"
+        );
+
+    const jobResultCount =
+        document.getElementById(
+            "job-result-count"
+        );
+
+
+    let jobCards = Array.from(
+        document.querySelectorAll(
+            ".job-list-link"
+        )
+    );
+
+
+    function normalizeText(text) {
+
+        return String(text)
+            .toLocaleLowerCase("tr-TR")
+            .trim();
+
+    }
+
+
+    function createFilterOptions(
+        selectElement,
+        values
+    ) {
+
+        const uniqueValues = Array.from(
+            new Set(values)
+        )
+        .filter(
+            function (value) {
+
+                return value;
+
+            }
+        )
+        .sort(
+            function (firstValue, secondValue) {
+
+                return firstValue.localeCompare(
+                    secondValue,
+                    "tr-TR"
+                );
+
+            }
+        );
+
+
+        uniqueValues.forEach(
+            function (value) {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+                option.value =
+                    normalizeText(value);
+
+                option.textContent =
+                    value;
+
+                selectElement.appendChild(
+                    option
+                );
+
+            }
+        );
+
+    }
+
+
+    createFilterOptions(
+        machineFilter,
+        jobCards.map(
+            function (card) {
+
+                return card.dataset.machine;
+
+            }
+        )
+    );
+
+
+    createFilterOptions(
+        customerFilter,
+        jobCards.map(
+            function (card) {
+
+                return card.dataset.customer;
+
+            }
+        )
+    );
+
+
+    function getDeliveryTime(card) {
+
+        const deliveryDate =
+            card.dataset.delivery;
+
+
+        if (!deliveryDate) {
+
+            return Number.MAX_SAFE_INTEGER;
+
+        }
+
+
+        const parsedDate =
+            new Date(
+                deliveryDate + "T00:00:00"
+            );
+
+
+        if (
+            Number.isNaN(
+                parsedDate.getTime()
+            )
+        ) {
+
+            return Number.MAX_SAFE_INTEGER;
+
+        }
+
+
+        return parsedDate.getTime();
+
+    }
+
+
+    function sortJobs(cards) {
+
+        const sortValue =
+            sortFilter.value;
+
+
+        cards.sort(
+            function (firstCard, secondCard) {
+
+                const firstId =
+                    Number(
+                        firstCard.dataset.jobId
+                    );
+
+                const secondId =
+                    Number(
+                        secondCard.dataset.jobId
+                    );
+
+
+                if (
+                    sortValue === "oldest"
+                ) {
+
+                    return firstId - secondId;
+
+                }
+
+
+                if (
+                    sortValue === "delivery"
+                ) {
+
+                    return (
+                        getDeliveryTime(firstCard)
+                        -
+                        getDeliveryTime(secondCard)
+                    );
+
+                }
+
+
+                if (
+                    sortValue === "name-asc"
+                ) {
+
+                    return firstCard.dataset.jobName
+                        .localeCompare(
+                            secondCard.dataset.jobName,
+                            "tr-TR"
+                        );
+
+                }
+
+
+                if (
+                    sortValue === "name-desc"
+                ) {
+
+                    return secondCard.dataset.jobName
+                        .localeCompare(
+                            firstCard.dataset.jobName,
+                            "tr-TR"
+                        );
+
+                }
+
+
+                return secondId - firstId;
+
+            }
+        );
+
+
+        cards.forEach(
+            function (card) {
+
+                jobsContainer.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+
+    function filterJobs() {
+
+        const searchValue =
+            normalizeText(
+                jobSearch.value
+            );
+
+        const machineValue =
+            normalizeText(
+                machineFilter.value
+            );
+
+        const customerValue =
+            normalizeText(
+                customerFilter.value
+            );
+
+        const statusValue =
+            normalizeText(
+                statusFilter.value
+            );
+
+
+        let visibleCount = 0;
+
+
+        jobCards.forEach(
+            function (card) {
+
+                const jobName =
+                    normalizeText(
+                        card.dataset.jobName
+                    );
+
+                const material =
+                    normalizeText(
+                        card.dataset.material
+                    );
+
+                const machine =
+                    normalizeText(
+                        card.dataset.machine
+                    );
+
+                const customer =
+                    normalizeText(
+                        card.dataset.customer
+                    );
+
+                const status =
+                    normalizeText(
+                        card.dataset.status
+                    );
+
+
+                const searchMatch =
+                    !searchValue
+
+                    ||
+
+                    jobName.includes(
+                        searchValue
+                    )
+
+                    ||
+
+                    material.includes(
+                        searchValue
+                    );
+
+
+                const machineMatch =
+                    !machineValue
+
+                    ||
+
+                    machine === machineValue;
+
+
+                const customerMatch =
+                    !customerValue
+
+                    ||
+
+                    customer === customerValue;
+
+
+                const statusMatch =
+                    !statusValue
+
+                    ||
+
+                    status === statusValue;
+
+
+                const isVisible =
+                    searchMatch
+
+                    &&
+
+                    machineMatch
+
+                    &&
+
+                    customerMatch
+
+                    &&
+
+                    statusMatch;
+
+
+                if (isVisible) {
+
+                    card.style.display =
+                        "block";
+
+                    visibleCount++;
+
+                }
+
+                else {
+
+                    card.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+
+        jobResultCount.textContent =
+            `${visibleCount} iş gösteriliyor`;
+
+
+        if (visibleCount === 0) {
+
+            noJobResult.style.display =
+                "block";
+
+        }
+
+        else {
+
+            noJobResult.style.display =
+                "none";
+
+        }
+
+
+        sortJobs(
+            jobCards
+        );
+
+    }
+
+
+    jobSearch.addEventListener(
+        "input",
+        filterJobs
+    );
+
+
+    machineFilter.addEventListener(
+        "change",
+        filterJobs
+    );
+
+
+    customerFilter.addEventListener(
+        "change",
+        filterJobs
+    );
+
+
+    statusFilter.addEventListener(
+        "change",
+        filterJobs
+    );
+
+
+    sortFilter.addEventListener(
+        "change",
+        filterJobs
+    );
+
+
+    clearFiltersButton.addEventListener(
+        "click",
+        function () {
+
+            jobSearch.value = "";
+
+            machineFilter.value = "";
+
+            customerFilter.value = "";
+
+            statusFilter.value = "";
+
+            sortFilter.value = "newest";
+
+            filterJobs();
+
+        }
+    );
+
+
+    filterJobs();
+
+</script>
 
 {% endblock %}

@@ -16,6 +16,7 @@
 
     </div>
 
+
     <a
         href="/job/{{ job['id'] }}"
         class="add-button"
@@ -43,13 +44,44 @@
         <br><br>
 
 
-        <label>Müşteri</label>
+        <label>🏭 Makine</label>
 
-        <select name="customer_id">
+        <select
+            name="machine_id"
+            required
+        >
+
+            {% for machine in machines %}
+
+                <option
+                    value="{{ machine['id'] }}"
+
+                    {% if job["machine_id"] == machine["id"] %}
+                        selected
+                    {% endif %}
+                >
+                    {{ machine["name"] }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+
+        <br><br>
+
+
+        <label>👤 Müşteri</label>
+
+        <select
+            name="customer_id"
+            id="customer-select"
+        >
 
             <option value="">
-                Müşteri Belirtilmemiş
+                Müşteri Seçilmemiş
             </option>
+
 
             {% for customer in customers %}
 
@@ -64,6 +96,54 @@
                 </option>
 
             {% endfor %}
+
+        </select>
+
+
+        <br><br>
+
+
+        <label>
+            📁 Müşteri Klasörü / Proje
+        </label>
+
+        <select
+            name="folder_id"
+            id="folder-select"
+
+            {% if not job["customer_id"] %}
+                disabled
+            {% endif %}
+        >
+
+            {% if not job["customer_id"] %}
+
+                <option value="">
+                    Önce müşteri seçiniz
+                </option>
+
+            {% else %}
+
+                <option value="">
+                    Genel İşler
+                </option>
+
+
+                {% for folder in folders %}
+
+                    <option
+                        value="{{ folder['id'] }}"
+
+                        {% if job["folder_id"] == folder["id"] %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ folder["name"] }}
+                    </option>
+
+                {% endfor %}
+
+            {% endif %}
 
         </select>
 
@@ -102,7 +182,10 @@
 
             <select name="start_day">
 
-                <option value="">Gün</option>
+                <option value="">
+                    Gün
+                </option>
+
 
                 {% for day in range(1, 32) %}
 
@@ -123,7 +206,10 @@
 
             <select name="start_month">
 
-                <option value="">Ay</option>
+                <option value="">
+                    Ay
+                </option>
+
 
                 {% for month_number, month_name in months.items() %}
 
@@ -144,7 +230,10 @@
 
             <select name="start_year">
 
-                <option value="">Yıl</option>
+                <option value="">
+                    Yıl
+                </option>
+
 
                 {% for year in years|reverse %}
 
@@ -174,7 +263,10 @@
 
             <select name="end_day">
 
-                <option value="">Gün</option>
+                <option value="">
+                    Gün
+                </option>
+
 
                 {% for day in range(1, 32) %}
 
@@ -195,7 +287,10 @@
 
             <select name="end_month">
 
-                <option value="">Ay</option>
+                <option value="">
+                    Ay
+                </option>
+
 
                 {% for month_number, month_name in months.items() %}
 
@@ -216,7 +311,10 @@
 
             <select name="end_year">
 
-                <option value="">Yıl</option>
+                <option value="">
+                    Yıl
+                </option>
+
 
                 {% for year in years|reverse %}
 
@@ -246,7 +344,10 @@
 
             <select name="delivery_day">
 
-                <option value="">Gün</option>
+                <option value="">
+                    Gün
+                </option>
+
 
                 {% for day in range(1, 32) %}
 
@@ -267,7 +368,10 @@
 
             <select name="delivery_month">
 
-                <option value="">Ay</option>
+                <option value="">
+                    Ay
+                </option>
+
 
                 {% for month_number, month_name in months.items() %}
 
@@ -288,7 +392,10 @@
 
             <select name="delivery_year">
 
-                <option value="">Yıl</option>
+                <option value="">
+                    Yıl
+                </option>
+
 
                 {% for year in years|reverse %}
 
@@ -312,7 +419,7 @@
         <br><br>
 
 
-        <label>Durum</label>
+        <label>📌 Durum</label>
 
         <select name="status">
 
@@ -328,17 +435,6 @@
 
 
             <option
-                value="Bekliyor"
-
-                {% if job["status"] == "Bekliyor" %}
-                    selected
-                {% endif %}
-            >
-                Bekliyor
-            </option>
-
-
-            <option
                 value="Tamamlandı"
 
                 {% if job["status"] == "Tamamlandı" %}
@@ -346,6 +442,17 @@
                 {% endif %}
             >
                 Tamamlandı
+            </option>
+
+
+            <option
+                value="Beklemede"
+
+                {% if job["status"] == "Beklemede" %}
+                    selected
+                {% endif %}
+            >
+                Beklemede
             </option>
 
 
@@ -365,11 +472,12 @@
         <br><br>
 
 
-        <label>Notlar</label>
+        <label>📝 Genel Notlar</label>
 
         <textarea
             name="notes"
-            rows="7"
+            rows="6"
+            placeholder="İş ile ilgili genel bilgiler..."
         >{{ job["notes"] or "" }}</textarea>
 
 
@@ -386,5 +494,127 @@
     </form>
 
 </div>
+
+
+<script>
+
+    const customerSelect =
+        document.getElementById(
+            "customer-select"
+        );
+
+    const folderSelect =
+        document.getElementById(
+            "folder-select"
+        );
+
+
+    async function loadFolders(customerId) {
+
+        folderSelect.innerHTML = "";
+
+
+        if (!customerId) {
+
+            folderSelect.disabled = true;
+
+            folderSelect.innerHTML = `
+                <option value="">
+                    Önce müşteri seçiniz
+                </option>
+            `;
+
+            return;
+
+        }
+
+
+        folderSelect.disabled = true;
+
+        folderSelect.innerHTML = `
+            <option value="">
+                Klasörler yükleniyor...
+            </option>
+        `;
+
+
+        try {
+
+            const response = await fetch(
+                `/api/customer/${customerId}/folders`
+            );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Klasörler yüklenemedi."
+                );
+
+            }
+
+
+            const folders =
+                await response.json();
+
+
+            folderSelect.innerHTML = `
+                <option value="">
+                    Genel İşler
+                </option>
+            `;
+
+
+            folders.forEach(
+                function (folder) {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+                    option.value =
+                        folder.id;
+
+                    option.textContent =
+                        folder.name;
+
+                    folderSelect.appendChild(
+                        option
+                    );
+
+                }
+            );
+
+
+            folderSelect.disabled = false;
+
+        }
+
+        catch (error) {
+
+            folderSelect.innerHTML = `
+                <option value="">
+                    Klasörler yüklenemedi
+                </option>
+            `;
+
+        }
+
+    }
+
+
+    customerSelect.addEventListener(
+        "change",
+        function () {
+
+            loadFolders(
+                customerSelect.value
+            );
+
+        }
+    );
+
+</script>
 
 {% endblock %}

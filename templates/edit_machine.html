@@ -1,0 +1,177 @@
+{% extends "layout.html" %}
+
+{% block title %}Makineyi Düzenle{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>
+            ✏️ Makineyi Düzenle
+        </h1>
+
+        <p>
+            {{ machine["name"] }}
+        </p>
+
+    </div>
+
+
+    <a
+        href="/machine/{{ machine['id'] }}"
+        class="add-button"
+    >
+        ← Geri
+    </a>
+
+</div>
+
+
+<div class="machine-card">
+
+    <form method="POST">
+
+        <label>Makine Adı</label>
+
+        <input
+            type="text"
+            name="name"
+            value="{{ machine['name'] }}"
+            required
+        >
+
+
+        <br><br>
+
+
+        <label>Makine Türü</label>
+
+        <input
+            type="text"
+            name="type"
+            value="{{ machine['type'] }}"
+            placeholder="CNC Torna / Dik İşleme / Kayar Otomat"
+            required
+        >
+
+
+        <br><br>
+
+
+        <label>Marka</label>
+
+        <input
+            type="text"
+            name="brand"
+            value="{{ machine['brand'] or '' }}"
+        >
+
+
+        <br><br>
+
+
+        <label>Model</label>
+
+        <input
+            type="text"
+            name="model"
+            value="{{ machine['model'] or '' }}"
+        >
+
+
+        <br><br>
+
+
+        <label>Kontrol Ünitesi</label>
+
+        <input
+            type="text"
+            name="control_unit"
+            value="{{ machine['control_unit'] or '' }}"
+            placeholder="Fanuc 0i-TB / Siemens 802D"
+        >
+
+
+        <br><br>
+
+
+        <label>Seri Numarası</label>
+
+        <input
+            type="text"
+            name="serial_number"
+            value="{{ machine['serial_number'] or '' }}"
+        >
+
+
+        <br><br>
+
+
+        <label>Durum</label>
+
+        <select name="status">
+
+            <option
+                value="Aktif"
+
+                {% if machine["status"] == "Aktif" %}
+                    selected
+                {% endif %}
+            >
+                Aktif
+            </option>
+
+
+            <option
+                value="Bakımda"
+
+                {% if machine["status"] == "Bakımda" %}
+                    selected
+                {% endif %}
+            >
+                Bakımda
+            </option>
+
+
+            <option
+                value="Pasif"
+
+                {% if machine["status"] == "Pasif" %}
+                    selected
+                {% endif %}
+            >
+                Pasif
+            </option>
+
+        </select>
+
+
+        <br><br>
+
+
+        <label>Notlar</label>
+
+        <textarea
+            name="notes"
+            rows="6"
+            placeholder="Makine ile ilgili notlar..."
+        >{{ machine["notes"] or "" }}</textarea>
+
+
+        <br><br>
+
+
+        <button
+            type="submit"
+            class="add-button"
+        >
+            💾 Değişiklikleri Kaydet
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

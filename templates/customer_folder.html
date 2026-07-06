@@ -16,10 +16,11 @@
         </h1>
 
         <p>
-            Teslim tarihine göre yıl arşivi
+            İş teslim arşivi
         </p>
 
     </div>
+
 
     <a
         href="/customer/{{ customer['id'] }}"
@@ -31,45 +32,74 @@
 </div>
 
 
-{% if years %}
+<div class="folder-grid">
 
-    <div class="folder-grid">
+    {% if undated_job_count > 0 %}
 
-        {% for year in years %}
+        <a
+            href="/customer/{{ customer['id'] }}/folder/{{ folder['id'] }}/undated"
+            class="folder-card"
+        >
 
-            <a
-                href="/customer/{{ customer['id'] }}/folder/{{ folder['id'] }}/year/{{ year['year'] }}"
-                class="folder-card"
-            >
+            <div class="folder-icon">
+                📁
+            </div>
 
-                <div class="folder-icon">
-                    📁
-                </div>
 
-                <div>
+            <div>
 
-                    <h2>
-                        {{ year["year"] }}
-                    </h2>
+                <h2>
+                    Teslim Tarihi Belirtilmemiş
+                </h2>
 
-                    <p>
-                        {{ year["job_count"] }} iş
-                    </p>
+                <p>
+                    {{ undated_job_count }} iş
+                </p>
 
-                </div>
+            </div>
 
-            </a>
+        </a>
 
-        {% endfor %}
+    {% endif %}
 
-    </div>
 
-{% else %}
+    {% for year in years %}
+
+        <a
+            href="/customer/{{ customer['id'] }}/folder/{{ folder['id'] }}/year/{{ year['year'] }}"
+            class="folder-card"
+        >
+
+            <div class="folder-icon">
+                📁
+            </div>
+
+
+            <div>
+
+                <h2>
+                    {{ year["year"] }}
+                </h2>
+
+                <p>
+                    {{ year["job_count"] }} iş
+                </p>
+
+            </div>
+
+        </a>
+
+    {% endfor %}
+
+</div>
+
+
+{% if not years and undated_job_count == 0 %}
 
     <div class="machine-card">
 
         <p>
-            Bu klasörde teslim tarihi girilmiş iş bulunmuyor.
+            Bu klasörde henüz iş bulunmuyor.
         </p>
 
     </div>

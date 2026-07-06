@@ -138,7 +138,22 @@
         <br><br>
 
 
-        <label>📁 Müşteri Klasörü / Proje</label>
+        <div class="field-title-row">
+
+            <label>
+                📁 Müşteri Klasörü / Proje
+            </label>
+
+            <button
+                type="button"
+                class="small-action-button"
+                id="show-folder-create"
+            >
+                + Yeni Klasör / Proje
+            </button>
+
+        </div>
+
 
         <select
             name="folder_id"
@@ -151,6 +166,40 @@
             </option>
 
         </select>
+
+
+        <div
+            id="quick-folder-box"
+            class="quick-create-box"
+            style="display: none;"
+        >
+
+            <label>Yeni Klasör / Proje Adı</label>
+
+            <div class="quick-create-row">
+
+                <input
+                    type="text"
+                    id="new-folder-name"
+                    placeholder="Örneğin: Baykar"
+                >
+
+                <button
+                    type="button"
+                    class="add-button"
+                    id="create-folder-button"
+                >
+                    Oluştur
+                </button>
+
+            </div>
+
+            <p
+                id="folder-create-message"
+                class="form-message"
+            ></p>
+
+        </div>
 
 
         <br><br>
@@ -375,6 +424,7 @@
     const folderSelect =
         document.getElementById("folder-select");
 
+
     const showCustomerCreate =
         document.getElementById("show-customer-create");
 
@@ -391,9 +441,48 @@
         document.getElementById("customer-create-message");
 
 
-    async function loadFolders(customerId) {
+    const showFolderCreate =
+        document.getElementById("show-folder-create");
+
+    const quickFolderBox =
+        document.getElementById("quick-folder-box");
+
+    const newFolderName =
+        document.getElementById("new-folder-name");
+
+    const createFolderButton =
+        document.getElementById("create-folder-button");
+
+    const folderCreateMessage =
+        document.getElementById("folder-create-message");
+
+
+    async function getFolders(customerId) {
+
+        const response = await fetch(
+            `/api/customer/${customerId}/folders`
+        );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Klasörler yüklenemedi."
+            );
+
+        }
+
+        return await response.json();
+
+    }
+
+
+    async function loadFolders(
+        customerId,
+        selectedFolderName = ""
+    ) {
 
         folderSelect.innerHTML = "";
+
 
         if (!customerId) {
 
@@ -421,11 +510,9 @@
 
         try {
 
-            const response = await fetch(
-                `/api/customer/${customerId}/folders`
+            const folders = await getFolders(
+                customerId
             );
-
-            const folders = await response.json();
 
 
             folderSelect.innerHTML = `
@@ -445,7 +532,21 @@
 
                     option.textContent = folder.name;
 
-                    folderSelect.appendChild(option);
+
+                    if (
+                        selectedFolderName &&
+                        folder.name.toLocaleLowerCase("tr-TR") ===
+                        selectedFolderName.toLocaleLowerCase("tr-TR")
+                    ) {
+
+                        option.selected = true;
+
+                    }
+
+
+                    folderSelect.appendChild(
+                        option
+                    );
 
                 }
             );
@@ -472,6 +573,14 @@
         "change",
         function () {
 
+            quickFolderBox.style.display =
+                "none";
+
+            newFolderName.value = "";
+
+            folderCreateMessage.textContent =
+                "";
+
             loadFolders(
                 customerSelect.value
             );
@@ -488,7 +597,8 @@
                 quickCustomerBox.style.display === "none"
             ) {
 
-                quickCustomerBox.style.display = "block";
+                quickCustomerBox.style.display =
+                    "block";
 
                 newCustomerName.focus();
 
@@ -496,7 +606,8 @@
 
             else {
 
-                quickCustomerBox.style.display = "none";
+                quickCustomerBox.style.display =
+                    "none";
 
             }
 
@@ -548,13 +659,18 @@
                 );
 
 
-                const data = await response.json();
+                const data =
+                    await response.json();
 
 
-                if (!response.ok || !data.success) {
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
 
                     customerCreateMessage.textContent =
-                        data.message || "Müşteri oluşturulamadı.";
+                        data.message ||
+                        "Müşteri oluşturulamadı.";
 
                     return;
 
@@ -576,7 +692,9 @@
                 if (!option) {
 
                     option =
-                        document.createElement("option");
+                        document.createElement(
+                            "option"
+                        );
 
                     option.value =
                         data.customer.id;
@@ -584,7 +702,9 @@
                     option.textContent =
                         data.customer.name;
 
-                    customerSelect.appendChild(option);
+                    customerSelect.appendChild(
+                        option
+                    );
 
                 }
 
@@ -628,7 +748,167 @@
 
             finally {
 
-                createCustomerButton.disabled = false;
+                createCustomerButton.disabled =
+                    false;
+
+            }
+
+        }
+    );
+
+
+    showFolderCreate.addEventListener(
+        "click",
+        function () {
+
+            const customerId =
+                customerSelect.value;
+
+
+            if (!customerId) {
+
+                folderCreateMessage.textContent =
+                    "Önce müşteri seçmelisin.";
+
+                quickFolderBox.style.display =
+                    "block";
+
+                return;
+
+            }
+
+
+            folderCreateMessage.textContent =
+                "";
+
+
+            if (
+                quickFolderBox.style.display === "none"
+            ) {
+
+                quickFolderBox.style.display =
+                    "block";
+
+                newFolderName.focus();
+
+            }
+
+            else {
+
+                quickFolderBox.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+
+    createFolderButton.addEventListener(
+        "click",
+        async function () {
+
+            const customerId =
+                customerSelect.value;
+
+            const folderName =
+                newFolderName.value.trim();
+
+
+            if (!customerId) {
+
+                folderCreateMessage.textContent =
+                    "Önce müşteri seçmelisin.";
+
+                return;
+
+            }
+
+
+            if (!folderName) {
+
+                folderCreateMessage.textContent =
+                    "Klasör / proje adını yaz.";
+
+                return;
+
+            }
+
+
+            createFolderButton.disabled = true;
+
+            folderCreateMessage.textContent =
+                "Oluşturuluyor...";
+
+
+            try {
+
+                const formData =
+                    new FormData();
+
+                formData.append(
+                    "folder_name",
+                    folderName
+                );
+
+
+                const response = await fetch(
+                    `/customer/${customerId}`,
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+
+                if (!response.ok) {
+
+                    folderCreateMessage.textContent =
+                        "Klasör oluşturulamadı.";
+
+                    return;
+
+                }
+
+
+                await loadFolders(
+                    customerId,
+                    folderName
+                );
+
+
+                newFolderName.value = "";
+
+                folderCreateMessage.textContent =
+                    "✅ Klasör / proje oluşturuldu ve seçildi.";
+
+
+                setTimeout(
+                    function () {
+
+                        quickFolderBox.style.display =
+                            "none";
+
+                        folderCreateMessage.textContent =
+                            "";
+
+                    },
+                    1000
+                );
+
+            }
+
+            catch (error) {
+
+                folderCreateMessage.textContent =
+                    "Klasör oluşturulamadı.";
+
+            }
+
+            finally {
+
+                createFolderButton.disabled =
+                    false;
 
             }
 

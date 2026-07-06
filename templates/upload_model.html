@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}Teknik Resim Yükle{% endblock %}
+{% block title %}Katı Model Yükle{% endblock %}
 
 {% block content %}
 
@@ -9,11 +9,11 @@
     <div>
 
         <h1>
-            📄 Teknik Resim Yükle
+            🧊 Katı Model Yükle
         </h1>
 
         <p>
-            İş teknik resim dosyası
+            STEP, NX, Parasolid ve IGES modelleri
         </p>
 
     </div>
@@ -33,7 +33,7 @@
 
     <div class="error-message">
 
-        ⛔ Bu dosya türü teknik resim olarak desteklenmiyor.
+        ⛔ Bu dosya türü katı model olarak desteklenmiyor.
 
     </div>
 
@@ -59,14 +59,14 @@
     >
 
         <label>
-            Teknik Resim Dosyası
+            Katı Model Dosyası
         </label>
 
 
         <input
             type="file"
-            name="drawing"
-            accept=".pdf,.dxf,.dwg,.step,.stp,.iges,.igs,.png,.jpg,.jpeg"
+            name="model"
+            accept=".step,.stp,.prt,.x_t,.x_b,.igs,.iges,.sat"
             required
         >
 
@@ -76,7 +76,37 @@
 
 
         <p>
-            PDF, DXF, DWG ve teknik resim görselleri desteklenir.
+            <b>Desteklenen dosyalar:</b>
+        </p>
+
+
+        <p>
+            STEP:
+            .step / .stp
+        </p>
+
+
+        <p>
+            Siemens NX:
+            .prt
+        </p>
+
+
+        <p>
+            Parasolid:
+            .x_t / .x_b
+        </p>
+
+
+        <p>
+            IGES:
+            .igs / .iges
+        </p>
+
+
+        <p>
+            ACIS:
+            .sat
         </p>
 
 
@@ -87,7 +117,7 @@
             type="submit"
             class="add-button"
         >
-            📄 Teknik Resmi Yükle
+            🧊 Modeli Yükle
         </button>
 
     </form>

@@ -69,24 +69,6 @@
 
         <li>
             <a href="#">
-                📄 Teknik Resimler
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                💻 NC Programları
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                📷 Fotoğraflar
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
                 🧾 Faturalar
             </a>
         </li>
@@ -118,9 +100,11 @@
 
 <script>
 
-    const searchInput = document.getElementById("live-search");
+    const searchInput =
+        document.getElementById("live-search");
 
-    const mainContent = document.querySelector(".main");
+    const mainContent =
+        document.querySelector(".main");
 
     let searchTimer = null;
 
@@ -151,25 +135,31 @@
             }
 
 
-            const html = await response.text();
+            const html =
+                await response.text();
 
 
-            const parser = new DOMParser();
-
-            const documentResult = parser.parseFromString(
-                html,
-                "text/html"
-            );
+            const parser =
+                new DOMParser();
 
 
-            const newMain = documentResult.querySelector(
-                ".main"
-            );
+            const documentResult =
+                parser.parseFromString(
+                    html,
+                    "text/html"
+                );
+
+
+            const newMain =
+                documentResult.querySelector(
+                    ".main"
+                );
 
 
             if (newMain) {
 
-                mainContent.innerHTML = newMain.innerHTML;
+                mainContent.innerHTML =
+                    newMain.innerHTML;
 
             }
 
@@ -198,7 +188,8 @@
             clearTimeout(searchTimer);
 
 
-            const query = searchInput.value.trim();
+            const query =
+                searchInput.value.trim();
 
 
             searchTimer = setTimeout(
@@ -220,7 +211,9 @@
                     }
 
 
-                    const params = new URLSearchParams();
+                    const params =
+                        new URLSearchParams();
+
 
                     params.set(
                         "q",
@@ -229,7 +222,8 @@
 
 
                     const searchUrl =
-                        "/search?" + params.toString();
+                        "/search?" +
+                        params.toString();
 
 
                     history.replaceState(
@@ -239,7 +233,9 @@
                     );
 
 
-                    loadPage(searchUrl);
+                    loadPage(
+                        searchUrl
+                    );
 
                 },
                 250

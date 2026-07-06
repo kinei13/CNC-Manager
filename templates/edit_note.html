@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block title %}İş Notunu Düzenle{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>
+            ✏️ İş Notunu Düzenle
+        </h1>
+
+        <p>
+            Mevcut not içeriğini güncelle
+        </p>
+
+    </div>
+
+
+    <a
+        href="/job/{{ note['job_id'] }}"
+        class="add-button"
+    >
+        ← Geri
+    </a>
+
+</div>
+
+
+<div class="machine-card">
+
+    <form method="POST">
+
+        <label>
+            📝 İş Notu
+        </label>
+
+
+        <textarea
+            name="note"
+            rows="10"
+            required
+        >{{ note["note"] }}</textarea>
+
+
+        <br>
+        <br>
+
+
+        <button
+            type="submit"
+            class="add-button"
+        >
+            💾 Notu Kaydet
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

@@ -8,24 +8,16 @@
 
     <div>
 
-        <h1>📦 {{ job["job_name"] }}</h1>
+        <h1>
+            📦 {{ job["job_name"] }}
+        </h1>
 
         <p>
-
             {{ job["machine_name"] }}
 
             |
 
-            {% if job["customer_name"] %}
-
-                {{ job["customer_name"] }}
-
-            {% else %}
-
-                Müşteri belirtilmemiş
-
-            {% endif %}
-
+            {{ job["customer_name"] or "Müşteri belirtilmemiş" }}
         </p>
 
     </div>
@@ -45,7 +37,7 @@
             method="POST"
             action="/job/{{ job['id'] }}/delete"
             style="display: inline;"
-            onsubmit="return confirm('Bu işi tamamen silmek istediğine emin misin? Teknik resimler, NC programları ve fotoğraflar da silinecek.');"
+            onsubmit="return confirm('Bu işi tamamen silmek istediğine emin misin? İşe bağlı tüm dosyalar, notlar ve kullanılan takım kayıtları da silinecek.');"
         >
 
             <button
@@ -75,27 +67,39 @@
 
     <div class="card">
 
-        <h2>{{ job["quantity"] }}</h2>
+        <h2>
+            {{ job["quantity"] }}
+        </h2>
 
-        <p>Adet</p>
-
-    </div>
-
-
-    <div class="card">
-
-        <h2>{{ job["status"] }}</h2>
-
-        <p>Durum</p>
+        <p>
+            Adet
+        </p>
 
     </div>
 
 
     <div class="card">
 
-        <h2>{{ job["material"] }}</h2>
+        <h2>
+            {{ job["status"] }}
+        </h2>
 
-        <p>Malzeme</p>
+        <p>
+            Durum
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            {{ job["material"] }}
+        </h2>
+
+        <p>
+            Malzeme
+        </p>
 
     </div>
 
@@ -107,9 +111,12 @@
 
 <div class="machine-card">
 
-    <h2>📋 İş Bilgileri</h2>
+    <h2>
+        📋 İş Bilgileri
+    </h2>
 
     <br>
+
 
     <p>
         <b>🏭 Makine:</b>
@@ -118,31 +125,26 @@
 
 
     <p>
-
         <b>👤 Müşteri:</b>
+        {{ job["customer_name"] or "Belirtilmemiş" }}
+    </p>
 
-        {% if job["customer_name"] %}
 
-            {{ job["customer_name"] }}
-
-        {% else %}
-
-            Belirtilmemiş
-
-        {% endif %}
-
+    <p>
+        <b>📁 Klasör / Proje:</b>
+        {{ job["folder_name"] or "Genel İşler" }}
     </p>
 
 
     <p>
         <b>🧱 Malzeme:</b>
-        {{ job["material"] }}
+        {{ job["material"] or "Belirtilmemiş" }}
     </p>
 
 
     <p>
         <b>📦 Adet:</b>
-        {{ job["quantity"] }}
+        {{ job["quantity"] or "Belirtilmemiş" }}
     </p>
 
 
@@ -173,7 +175,10 @@
     <br>
 
 
-    <h3>📝 Notlar</h3>
+    <h3>
+        📝 Notlar
+    </h3>
+
 
     <p>
         {{ job["notes"] or "Not bulunmuyor." }}
@@ -189,7 +194,360 @@
 
     <div class="page-header">
 
-        <h2>📄 Teknik Resimler</h2>
+        <div>
+
+            <h2>
+                🔧 Kullanılan Takımlar
+            </h2>
+
+            <p>
+                Bu işte kullanılan takım ve kesme bilgileri
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <form
+        method="POST"
+        action="/job/{{ job['id'] }}/add-tool"
+    >
+
+        <div class="job-filter-grid">
+
+            <div>
+
+                <label>
+                    Takım No
+                </label>
+
+                <input
+                    type="text"
+                    name="tool_no"
+                    placeholder="T0101"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Takım / Uç
+                </label>
+
+                <input
+                    type="text"
+                    name="tool_name"
+                    placeholder="WNMG080408"
+                    required
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Operasyon
+                </label>
+
+                <input
+                    type="text"
+                    name="operation"
+                    placeholder="Dış çap kaba"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Kesme Değerleri
+                </label>
+
+                <input
+                    type="text"
+                    name="cutting_data"
+                    placeholder="S2000 F0.18"
+                >
+
+            </div>
+
+        </div>
+
+
+        <br>
+
+
+        <label>
+            Takım Notu
+        </label>
+
+        <textarea
+            name="tool_notes"
+            rows="3"
+            placeholder="Örneğin: Finişte 0.2 talaş bırak..."
+        ></textarea>
+
+
+        <br>
+        <br>
+
+
+        <button
+            type="submit"
+            class="add-button"
+        >
+            + Takım Ekle
+        </button>
+
+    </form>
+
+
+    <br>
+
+    <hr>
+
+    <br>
+
+
+    {% if tools %}
+
+        {% for tool in tools %}
+
+            <div class="file-row">
+
+                <div>
+
+                    <h3>
+
+                        🔧
+
+                        {% if tool["tool_no"] %}
+
+                            {{ tool["tool_no"] }} —
+
+                        {% endif %}
+
+                        {{ tool["tool_name"] }}
+
+                    </h3>
+
+
+                    {% if tool["operation"] %}
+
+                        <p>
+                            <b>⚙️ Operasyon:</b>
+                            {{ tool["operation"] }}
+                        </p>
+
+                    {% endif %}
+
+
+                    {% if tool["cutting_data"] %}
+
+                        <p>
+                            <b>📈 Kesme Değerleri:</b>
+                            {{ tool["cutting_data"] }}
+                        </p>
+
+                    {% endif %}
+
+
+                    {% if tool["notes"] %}
+
+                        <p>
+                            <b>📝 Not:</b>
+                            {{ tool["notes"] }}
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div
+                    style="
+                        display: flex;
+                        gap: 10px;
+                        align-items: center;
+                    "
+                >
+
+                    <a
+                        href="/tool/{{ tool['id'] }}/edit"
+                        class="small-action-button"
+                    >
+                        ✏️ Düzenle
+                    </a>
+
+
+                    <form
+                        method="POST"
+                        action="/delete-tool/{{ tool['id'] }}"
+                        onsubmit="return confirm('Bu takım kaydını silmek istediğine emin misin?');"
+                    >
+
+                        <button
+                            type="submit"
+                            class="delete-button"
+                        >
+                            🗑️ Sil
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>
+            Henüz kullanılan takım eklenmedi.
+        </p>
+
+    {% endif %}
+
+</div>
+
+
+<br>
+
+
+<div class="machine-card">
+
+    <div class="page-header">
+
+        <h2>
+            📝 İş Notları
+        </h2>
+
+    </div>
+
+
+    <form
+        method="POST"
+        action="/job/{{ job['id'] }}/add-note"
+    >
+
+        <textarea
+            name="note"
+            rows="4"
+            placeholder="İşe yeni not ekle..."
+            required
+        ></textarea>
+
+
+        <br>
+        <br>
+
+
+        <button
+            type="submit"
+            class="add-button"
+        >
+            + Not Ekle
+        </button>
+
+    </form>
+
+
+    <br>
+
+    <hr>
+
+    <br>
+
+
+    {% if notes %}
+
+        <div class="note-list">
+
+            {% for note in notes %}
+
+                <div class="note-item">
+
+                    <div class="note-content">
+
+                        <p>
+                            {{ note["note"] }}
+                        </p>
+
+
+                        <span class="note-date">
+                            🕒 {{ note["created_at"] }}
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        style="
+                            display: flex;
+                            gap: 10px;
+                            align-items: center;
+                        "
+                    >
+
+                        <a
+                            href="/note/{{ note['id'] }}/edit"
+                            class="small-action-button"
+                        >
+                            ✏️ Düzenle
+                        </a>
+
+
+                        <form
+                            method="POST"
+                            action="/delete-note/{{ note['id'] }}"
+                            onsubmit="return confirm('Bu notu silmek istediğine emin misin?');"
+                        >
+
+                            <button
+                                type="submit"
+                                class="delete-button"
+                            >
+                                🗑️ Sil
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <p>
+            Henüz iş notu eklenmedi.
+        </p>
+
+    {% endif %}
+
+</div>
+
+
+<br>
+
+
+<div class="machine-card">
+
+    <div class="page-header">
+
+        <h2>
+            📄 Teknik Resimler
+        </h2>
+
 
         <a
             href="/job/{{ job['id'] }}/upload-drawing"
@@ -199,6 +557,7 @@
         </a>
 
     </div>
+
 
     <hr>
 
@@ -256,7 +615,104 @@
 
     <div class="page-header">
 
-        <h2>💻 NC Programları</h2>
+        <h2>
+            🧊 Katı Modeller
+        </h2>
+
+
+        <a
+            href="/job/{{ job['id'] }}/upload-model"
+            class="add-button"
+        >
+            + Katı Model Yükle
+        </a>
+
+    </div>
+
+
+    <hr>
+
+    <br>
+
+
+    {% if models %}
+
+        {% for model in models %}
+
+            <div class="file-row">
+
+                <a
+                    href="/uploads/{{ model['file_path'] }}"
+                    target="_blank"
+                >
+
+                    {% set extension = model["file_name"].rsplit(".", 1)[-1]|lower %}
+
+                    {% if extension == "prt" %}
+
+                        🟦 NX Parça Dosyası —
+                        {{ model["file_name"] }}
+
+                    {% elif extension == "step" or extension == "stp" %}
+
+                        🧊 STEP Model —
+                        {{ model["file_name"] }}
+
+                    {% elif extension == "x_t" or extension == "x_b" %}
+
+                        📦 Parasolid Model —
+                        {{ model["file_name"] }}
+
+                    {% else %}
+
+                        📦 {{ model["file_name"] }}
+
+                    {% endif %}
+
+                </a>
+
+
+                <form
+                    method="POST"
+                    action="/delete-file/model/{{ model['id'] }}"
+                    onsubmit="return confirm('Bu katı modeli silmek istediğine emin misin?');"
+                >
+
+                    <button
+                        type="submit"
+                        class="delete-button"
+                    >
+                        🗑️ Sil
+                    </button>
+
+                </form>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>
+            Henüz katı model yüklenmedi.
+        </p>
+
+    {% endif %}
+
+</div>
+
+
+<br>
+
+
+<div class="machine-card">
+
+    <div class="page-header">
+
+        <h2>
+            💻 NC Programları
+        </h2>
+
 
         <a
             href="/job/{{ job['id'] }}/upload-program"
@@ -266,6 +722,7 @@
         </a>
 
     </div>
+
 
     <hr>
 
@@ -323,7 +780,10 @@
 
     <div class="page-header">
 
-        <h2>📷 Fotoğraflar</h2>
+        <h2>
+            📷 Fotoğraflar
+        </h2>
+
 
         <a
             href="/job/{{ job['id'] }}/upload-photo"
@@ -333,6 +793,7 @@
         </a>
 
     </div>
+
 
     <hr>
 

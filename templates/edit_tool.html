@@ -1,0 +1,127 @@
+{% extends "layout.html" %}
+
+{% block title %}Takım Kaydını Düzenle{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>
+            ✏️ Takım Kaydını Düzenle
+        </h1>
+
+        <p>
+            {{ tool["tool_name"] }}
+        </p>
+
+    </div>
+
+
+    <a
+        href="/job/{{ tool['job_id'] }}"
+        class="add-button"
+    >
+        ← Geri
+    </a>
+
+</div>
+
+
+<div class="machine-card">
+
+    <form method="POST">
+
+        <label>
+            Takım No
+        </label>
+
+        <input
+            type="text"
+            name="tool_no"
+            value="{{ tool['tool_no'] or '' }}"
+            placeholder="T0101"
+        >
+
+
+        <br>
+        <br>
+
+
+        <label>
+            Takım / Uç
+        </label>
+
+        <input
+            type="text"
+            name="tool_name"
+            value="{{ tool['tool_name'] }}"
+            placeholder="WNMG080408"
+            required
+        >
+
+
+        <br>
+        <br>
+
+
+        <label>
+            Operasyon
+        </label>
+
+        <input
+            type="text"
+            name="operation"
+            value="{{ tool['operation'] or '' }}"
+            placeholder="Dış çap kaba"
+        >
+
+
+        <br>
+        <br>
+
+
+        <label>
+            Kesme Değerleri
+        </label>
+
+        <input
+            type="text"
+            name="cutting_data"
+            value="{{ tool['cutting_data'] or '' }}"
+            placeholder="S2000 F0.18"
+        >
+
+
+        <br>
+        <br>
+
+
+        <label>
+            Takım Notu
+        </label>
+
+        <textarea
+            name="tool_notes"
+            rows="6"
+            placeholder="Takım ile ilgili notlar..."
+        >{{ tool["notes"] or "" }}</textarea>
+
+
+        <br>
+        <br>
+
+
+        <button
+            type="submit"
+            class="add-button"
+        >
+            💾 Takım Kaydını Kaydet
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

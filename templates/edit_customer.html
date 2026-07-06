@@ -1,0 +1,114 @@
+{% extends "layout.html" %}
+
+{% block title %}Müşteriyi Düzenle{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>✏️ Müşteriyi Düzenle</h1>
+
+        <p>
+            {{ customer["name"] }}
+        </p>
+
+    </div>
+
+    <a
+        href="/customer/{{ customer['id'] }}"
+        class="add-button"
+    >
+        ← Geri
+    </a>
+
+</div>
+
+
+{% if error == "duplicate" %}
+
+    <div class="error-message">
+
+        Bu isimde başka bir müşteri zaten bulunuyor.
+
+    </div>
+
+{% endif %}
+
+
+<div class="machine-card">
+
+    <form method="POST">
+
+        <label>Firma Adı</label>
+
+        <input
+            type="text"
+            name="name"
+            value="{{ customer['name'] }}"
+            required
+        >
+
+
+        <br><br>
+
+
+        <label>Telefon</label>
+
+        <input
+            type="text"
+            name="phone"
+            value="{{ customer['phone'] or '' }}"
+        >
+
+
+        <br><br>
+
+
+        <label>E-Posta</label>
+
+        <input
+            type="email"
+            name="email"
+            value="{{ customer['email'] or '' }}"
+        >
+
+
+        <br><br>
+
+
+        <label>Adres</label>
+
+        <textarea
+            name="address"
+            rows="5"
+        >{{ customer["address"] or "" }}</textarea>
+
+
+        <br><br>
+
+
+        <label>Notlar</label>
+
+        <textarea
+            name="notes"
+            rows="5"
+        >{{ customer["notes"] or "" }}</textarea>
+
+
+        <br><br>
+
+
+        <button
+            type="submit"
+            class="add-button"
+        >
+            💾 Değişiklikleri Kaydet
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

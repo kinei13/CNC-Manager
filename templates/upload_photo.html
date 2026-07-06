@@ -6,13 +6,50 @@
 
 <div class="page-header">
 
-    <h1>📷 Fotoğraf Yükle</h1>
+    <div>
 
-    <a href="/job/{{ job_id }}" class="add-button">
+        <h1>
+            📷 Fotoğraf Yükle
+        </h1>
+
+        <p>
+            İş fotoğraflarını arşive ekle
+        </p>
+
+    </div>
+
+
+    <a
+        href="/job/{{ job_id }}"
+        class="add-button"
+    >
         ← Geri
     </a>
 
 </div>
+
+
+{% if error == "type" %}
+
+    <div class="error-message">
+
+        ⛔ Seçilen dosyalardan biri desteklenen fotoğraf türünde değil.
+
+    </div>
+
+{% endif %}
+
+
+{% if error == "empty" %}
+
+    <div class="error-message">
+
+        ⛔ En az bir fotoğraf seçmelisin.
+
+    </div>
+
+{% endif %}
+
 
 <div class="machine-card">
 
@@ -21,25 +58,36 @@
         enctype="multipart/form-data"
     >
 
-        <label>Fotoğrafları Seç</label>
+        <label>
+            Fotoğraflar
+        </label>
+
 
         <input
             type="file"
             name="photos"
-            accept=".jpg,.jpeg,.png,.webp"
+            accept=".jpg,.jpeg,.png,.webp,.heic,image/*"
             multiple
             required
         >
 
-        <br><br>
+
+        <br>
+        <br>
+
 
         <p>
             Birden fazla fotoğrafı aynı anda seçebilirsin.
         </p>
 
+
         <br>
 
-        <button class="add-button">
+
+        <button
+            type="submit"
+            class="add-button"
+        >
             📷 Fotoğrafları Yükle
         </button>
 
